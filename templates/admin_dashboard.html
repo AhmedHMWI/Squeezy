@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Manage Fruits</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h2 class="text-center">Admin Dashboard - Manage Fruits</h2>
+        
+        <div class="card shadow-lg p-4 mt-4">
+            <h4>Add New Fruit</h4>
+            <form method="POST" action="{{ url_for('admin.add_fruit') }}">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Fruit Name</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price ($)</label>
+                    <input type="number" step="0.01" id="price" name="price" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100">Add Fruit</button>
+            </form>
+        </div>
+
+        <div class="card shadow-lg p-4 mt-4">
+            <h4>Available Fruits</h4>
+
+            {% if fruits %}
+                <table class="table table-striped mt-3">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Price ($)</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for fruit in fruits %}
+                        <tr>
+                            <td>{{ fruit.id }}</td>
+                            <td>{{ fruit.name }}</td>
+                            <td>${{ fruit.price }}</td>
+                            <td>{{ fruit.quantity }}</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('admin.edit_fruit', fruit_id=fruit.id) }}" style="display:inline;">
+                                    <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                                </form>
+                                <form method="POST" action="{{ url_for('admin.delete_fruit', fruit_id=fruit.id) }}" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="alert alert-warning text-center mt-3">
+                    <h5>No fruits available.</h5>
+                    <p>Start adding fruits now!</p>
+                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFruitModal">Add First Fruit</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

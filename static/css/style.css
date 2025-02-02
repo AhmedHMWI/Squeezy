@@ -1,0 +1,35 @@
+/* تصميم أنيق لصفحة تسجيل الدخول */
+body {
+    background: linear-gradient(to right, #ff9966, #ff5e62);
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.input-group-text {
+    background: #ff5e62;
+    color: white;
+    border: none;
+}
+
+.form-control {
+    border-left: none;
+}
+
+.btn-primary {
+    background: #ff5e62;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: #ff9966;
+}
+
+a {
+    color: #ff5e62;
+}

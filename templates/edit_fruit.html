@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Fruit</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h2>Edit Fruit</h2>
+    <form method="POST">
+        <label>Name:</label>
+        <input type="text" name="name" value="{{ fruit.name }}" required>
+
+        <label>Price:</label>
+        <input type="number" name="price" step="0.01" value="{{ fruit.price }}" required>
+
+        <label>Quantity:</label>
+        <input type="number" name="quantity" value="{{ fruit.quantity }}" required>
+
+        <button type="submit">Update Fruit</button>
+    </form>
+    <a href="{{ url_for('admin.admin_dashboard') }}">Back to Dashboard</a>
+</body>
+</html>
