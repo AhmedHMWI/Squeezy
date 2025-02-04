@@ -3,15 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
+    <title>User Dashboard - Create Your Juice</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
-    <div class="dashboard-container">
-        <h2>Welcome, {{ user }}</h2>
-        <p>This is your User Dashboard.</p>
+<body class="bg-light">
 
-        <a href="{{ url_for('logout') }}">Logout</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">User Dashboard</a>
+            <div class="d-flex">
+                <span class="navbar-text text-light me-3">Welcome, <strong>{{ user }}</strong></span>
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-danger">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Create Your Juice</h2>
+        
+        <div class="card shadow-lg p-4">
+            <h4>Select Fruits</h4>
+            
+            {% if fruits %}
+                <form method="POST" action="{{ url_for('juice.create_juice') }}" enctype="multipart/form-data">
+                    <div class="row">
+                        {% for fruit in fruits %}
+                        <div class="col-md-4">
+                            <div class="card mb-3">
+                                <img src="{{ url_for('static', filename=fruit.image_url) }}" class="card-img-top" alt="{{ fruit.name }}">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">{{ fruit.name }}</h5>
+                                    <p class="card-text">Price: ${{ "%.2f"|format(fruit.price) }}</p>
+                                    <input type="checkbox" name="selected_fruits[]" value="{{ fruit.id }}"> Select
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="juice_name" class="form-label">Juice Name:</label>
+                        <input type="text" class="form-control" id="juice_name" name="juice_name" placeholder="Enter juice name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Choose Juice Image:</label>
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-success">Create Juice</button>
+                    </div>
+                </form>
+            {% else %}
+                <div class="alert alert-warning text-center mt-3">
+                    <h5>No fruits available.</h5>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- ✅ عرض العصائر التي أنشأها المستخدم -->
+        <div class="card shadow-lg p-4 mt-4">
+            <h4>Your Juices</h4>
+
+            {% if juices %}
+                <table class="table table-striped mt-3">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Juice Name</th>
+                            <th>Fruits</th>
+                            <th>Price</th>
+                            <th>Image</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for juice in juices %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ juice.name }}</td>
+                            <td>{{ juice.fruit_names }}</td>
+                            <td>${{ "%.2f"|format(juice.price) }}</td>
+                            <td>
+                                {% if juice.image_url %}
+                                    <img src="{{ url_for('static', filename=juice.image_url) }}" alt="{{ juice.name }}" style="width: 50px; height: 50px;">
+                                {% else %}
+                                    <span>No Image</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('user.edit_juice', juice_id=juice.id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ url_for('user.delete_juice', juice_id=juice.id) }}" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this juice?')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="alert alert-info text-center mt-3">
+                    <h5>You haven't created any juices yet.</h5>
+                </div>
+            {% endif %}
+        </div>
     </div>
+
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>
