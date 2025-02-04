@@ -23,19 +23,22 @@ app.register_blueprint(user_bp, url_prefix='/user')
 app.register_blueprint(juice_bp, url_prefix='/juice')
 
 @app.route('/')
-def home():
-    if 'user_id' in session:
-        if session['role'] == 'admin':
-            return redirect(url_for('admin.admin_dashboard'))
-        else:
-            return redirect(url_for('user.user_dashboard'))  
-    return redirect(url_for('auth.login'))
+def index():
+    """ الصفحة الرئيسية للموقع """
+    return redirect(url_for('user.home'))
+
+
 
 @app.route('/dashboard/user')
 def user_dashboard():
-    """ User dashboard """
+    """User dashboard"""
     if 'user_id' in session and session['role'] == 'user':
-        return render_template('user_dashboard.html', user=session.get('user_name', 'User'))
+        # افترض أن العصائر موجودة في قاعدة البيانات وتسترجعها هنا
+        cursor = get_db_connection().cursor()
+        cursor.execute("SELECT * FROM juices WHERE user_id = %s", (session['user_id'],))
+        juices = cursor.fetchall()
+
+        return render_template('user_dashboard.html', user=session.get('user_name', 'User'), juices=juices)
     
     flash("Please log in first!", "error")
     return redirect(url_for('auth.login'))
