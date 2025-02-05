@@ -29,19 +29,37 @@ def get_all_fruits():
 
 @user_bp.route('/dashboard')
 def user_dashboard():
-    """ عرض لوحة تحكم المستخدم مع العصائر الخاصة به """
-    if 'user_id' in session and session['role'] == 'user':
-        user_id = session['user_id']
-        fruits = get_all_fruits()
-        juices = get_user_juices(user_id)  # ✅ جلب العصائر الخاصة بالمستخدم
-        
-        print("DEBUG: Juices sent to template:", juices)  # 🟢 طباعة البيانات لمعرفة هل يتم إرسالها إلى القالب
+    if 'user_id' not in session:
+        flash("❌ You must log in first!", "error")
+        return redirect(url_for('auth.login'))
 
-        return render_template('user_dashboard.html', user=session.get('user_name', 'User'), fruits=fruits, juices=juices)
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
 
-    flash("Please log in first!", "error")
-    return redirect(url_for('auth.login'))
+    # Get user details
+    cursor.execute("SELECT name FROM users WHERE id = %s", (session['user_id'],))
+    user = cursor.fetchone()
 
+    # Get available fruits
+    cursor.execute("SELECT * FROM fruits")
+    fruits = cursor.fetchall()
+
+    # Get juices created by user
+    cursor.execute("""
+        SELECT juices.id, juices.name, juices.price, juices.image_url,
+               GROUP_CONCAT(fruits.name SEPARATOR ', ') AS fruit_names
+        FROM juices
+        LEFT JOIN juice_fruits ON juices.id = juice_fruits.juice_id
+        LEFT JOIN fruits ON juice_fruits.fruit_id = fruits.id
+        WHERE juices.user_id = %s
+        GROUP BY juices.id;
+    """, (session['user_id'],))
+    juices = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return render_template('user_dashboard.html', user=user['name'], fruits=fruits, juices=juices)
 
 
 @user_bp.route('/create_juice', methods=['POST'])
@@ -53,16 +71,16 @@ def create_juice():
 
     juice_name = request.form.get('juice_name')
     selected_fruits = request.form.getlist('selected_fruits')
-    image_url = None
+    image_url = ''  # ✅ استخدم سلسلة فارغة بدلاً من None
 
-    # ✅ معالجة رفع الصورة
-    if 'image' in request.files:
-        file = request.files['image']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            filepath = os.path.join(UPLOAD_FOLDER, filename)
-            file.save(filepath)
-            image_url = f"uploads/{filename}"
+    # if 'image' in request.files:
+    file = request.files['image']
+    # if file:
+    filename = secure_filename(file.filename)
+    filepath = os.path.join(UPLOAD_FOLDER, filename)
+    file.save(filepath)
+    image_url = f"uploads/{filename}" 
+    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
     if not selected_fruits:
         flash("Please select at least one fruit!", "error")
@@ -72,11 +90,14 @@ def create_juice():
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        # إدخال العصير مع رابط الصورة في قاعدة البيانات
-        cursor.execute("INSERT INTO juices (name, image_url) VALUES (%s, %s)", (juice_name, image_url))
-        juice_id = cursor.lastrowid  # الحصول على ID العصير الذي تم إنشاؤه
+        # ✅ إدخال العصير مع الصورة في قاعدة البيانات
+        cursor.execute("INSERT INTO juices (name, image_url, user_id) VALUES (%s, %s, %s)", 
+                    (juice_name, image_url, session['user_id']))
 
-        # ربط الفواكه بالعصير في قاعدة البيانات
+        juice_id = cursor.lastrowid  
+        conn.commit()
+
+        # ✅ إدخال الفواكه المختارة
         for fruit_id in selected_fruits:
             cursor.execute("INSERT INTO juice_fruits (juice_id, fruit_id) VALUES (%s, %s)", (juice_id, fruit_id))
 
@@ -87,7 +108,11 @@ def create_juice():
     finally:
         conn.close()
 
-    return redirect(url_for('user.user_dashboard'))
+    # Return the updated user_dashboard.html without redirecting
+    fruits = get_all_fruits()
+    juices = get_user_juices(session['user_id'])
+    return render_template('user_dashboard.html', user=session.get('user_name', 'User'), fruits=fruits, juices=juices)
+
 
 
 
@@ -100,33 +125,35 @@ def edit_juice(juice_id):
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
 
-        # جلب بيانات العصير الحالي
         cursor.execute("SELECT * FROM juices WHERE id = %s", (juice_id,))
         juice = cursor.fetchone()
         if not juice:
             flash("Juice not found!", "error")
             return redirect(url_for('user.user_dashboard'))
 
-        # جلب الفواكه المتاحة
         cursor.execute("SELECT * FROM fruits")
         all_fruits = cursor.fetchall()
 
-        # جلب الفواكه المرتبطة بالعصير الحالي
         cursor.execute("SELECT fruit_id FROM juice_fruits WHERE juice_id = %s", (juice_id,))
         selected_fruit_ids = [row['fruit_id'] for row in cursor.fetchall()]
 
         if request.method == 'POST':
             new_name = request.form['juice_name']
             new_selected_fruits = request.form.getlist('selected_fruits')
-            new_image_url = request.form.get('image_url')  # إضافة رابط الصورة الجديد
+            new_image_url = juice['image_url'] if juice['image_url'] else '' 
 
-            # تحديث اسم العصير
-            cursor.execute("UPDATE juices SET name = %s, image_url = %s WHERE id = %s", (new_name, new_image_url, juice_id))
+            if 'image' in request.files:
+                file = request.files['image']
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    filepath = os.path.join(UPLOAD_FOLDER, filename)
+                    file.save(filepath)
+                    new_image_url = f"uploads/{filename}"
 
-            # حذف الفواكه القديمة
+            cursor.execute("UPDATE juices SET name = %s, image_url = %s WHERE id = %s", 
+                        (new_name, new_image_url, juice_id))
+
             cursor.execute("DELETE FROM juice_fruits WHERE juice_id = %s", (juice_id,))
-
-            # إدخال الفواكه الجديدة
             for fruit_id in new_selected_fruits:
                 cursor.execute("INSERT INTO juice_fruits (juice_id, fruit_id) VALUES (%s, %s)", (juice_id, fruit_id))
 
@@ -183,26 +210,28 @@ def delete_juice(juice_id):
 
 
 def get_user_juices(user_id):
-    """ Fetch all juices created by the logged-in user, including those without fruits """
+    """ Fetch all juices created by the logged-in user """
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        
+
         query = """
-                SELECT juices.id, juices.name, juices.price, juices.image_url,
-                    IFNULL(GROUP_CONCAT(DISTINCT fruits.name ORDER BY fruits.name SEPARATOR ', '), 'No fruits selected') AS fruit_names
-                FROM juices
-                LEFT JOIN juice_fruits ON juices.id = juice_fruits.juice_id
-                LEFT JOIN fruits ON juice_fruits.fruit_id = fruits.id
-                WHERE juices.user_id = %s
-                GROUP BY juices.id, juices.name, juices.price, juices.image_url, juices.created_at
-                ORDER BY juices.created_at DESC
-                """
-        
+    SELECT juices.id, juices.name, juices.price, 
+           IFNULL(juices.image_url, '') AS image_url,  # ✅ استبدل NULL بسلسلة فارغة
+           IFNULL(GROUP_CONCAT(DISTINCT fruits.name ORDER BY fruits.name SEPARATOR ', '), 'No fruits selected') AS fruit_names
+    FROM juices
+    LEFT JOIN juice_fruits ON juices.id = juice_fruits.juice_id
+    LEFT JOIN fruits ON juice_fruits.fruit_id = fruits.id
+    WHERE juices.user_id = %s
+    GROUP BY juices.id
+    ORDER BY juices.created_at DESC
+"""
+
+
         cursor.execute(query, (user_id,))
         juices = cursor.fetchall()
 
-        print("DEBUG: User Juices from DB:", juices)  # Debugging output to see what is fetched
+        print(f"DEBUG: Juices fetched for user {user_id}: {juices}")  # ✅ تحقق من البيانات المسترجعة
 
         return juices
     except Exception as e:
@@ -210,6 +239,7 @@ def get_user_juices(user_id):
         return []
     finally:
         conn.close()
+
         
         
 
@@ -244,6 +274,5 @@ def get_all_juices():
 
 @user_bp.route('/')
 def home():
-    """ الصفحة الرئيسية - تعرض جميع العصائر """
     juices = get_all_juices()
     return render_template('home.html', juices=juices)
