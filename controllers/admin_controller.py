@@ -10,11 +10,9 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin', template_folder='../templates')
 
 def allowed_file(filename):
-    """ التحقق من امتداد الملف """
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def get_all_fruits():
-    """ جلب جميع الفواكه من قاعدة البيانات """
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
@@ -30,7 +28,7 @@ def get_all_fruits():
 @admin_bp.route('/dashboard')
 def admin_dashboard():
     if 'user_name' not in session:
-        flash("❌ Please log in first!", "error")
+        flash("Please log in first!", "error")
         return redirect(url_for('auth.login'))
 
     fruits = get_all_fruits()
@@ -42,13 +40,12 @@ def add_fruit():
         flash("Please log in first!", "error")
         return redirect(url_for('auth.login'))
 
-    user_id = session['user_id']  # ✅ احصل على user_id من الجلسة
+    user_id = session['user_id']
     name = request.form.get('name')
     price = request.form.get('price')
     quantity = request.form.get('quantity')
     image_url = None  
 
-    # ✅ معالجة رفع الصورة
     if 'image' in request.files:
         file = request.files['image']
         if file and allowed_file(file.filename):
@@ -82,12 +79,11 @@ def edit_fruit(fruit_id):
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
 
-        # ✅ جلب بيانات الفاكهة
         cursor.execute("SELECT * FROM fruits WHERE id = %s", (fruit_id,))
         fruit = cursor.fetchone()
 
         if not fruit:
-            flash("❌ Fruit not found!", "error")
+            flash("Fruit not found!", "error")
             return redirect(url_for('admin.admin_dashboard'))
 
         if request.method == 'POST':
@@ -96,7 +92,6 @@ def edit_fruit(fruit_id):
             quantity = request.form.get('quantity')
             image_url = fruit['image_url']  
 
-            # ✅ معالجة رفع صورة جديدة
             if 'image' in request.files:
                 file = request.files['image']
                 if file and allowed_file(file.filename):
@@ -105,18 +100,17 @@ def edit_fruit(fruit_id):
                     file.save(filepath)
                     image_url = f"uploads/{filename}" 
 
-            # ✅ تحديث بيانات الفاكهة
             cursor.execute("UPDATE fruits SET name = %s, price = %s, quantity = %s, image_url = %s WHERE id = %s",
                            (name, price, quantity, image_url, fruit_id))
             conn.commit()
 
-            flash("✅ Fruit updated successfully!", "success")
+            flash("Fruit updated successfully!", "success")
             return redirect(url_for('admin.admin_dashboard'))
 
         return render_template('edit_fruit.html', fruit=fruit, user=session.get('user_name', 'Admin'))
 
     except Exception as e:
-        flash(f"❌ Error editing fruit: {str(e)}", "error")
+        flash(f"Error editing fruit: {str(e)}", "error")
         return redirect(url_for('admin.admin_dashboard'))
     finally:
         conn.close()
@@ -129,9 +123,9 @@ def delete_fruit(fruit_id):
 
         cursor.execute("DELETE FROM fruits WHERE id=%s", (fruit_id,))
         conn.commit()
-        flash("❌ Fruit deleted successfully!", "danger")
+        flash("Fruit deleted successfully!", "danger")
     except Exception as e:
-        flash(f"❌ Error deleting fruit: {str(e)}", "error")
+        flash(f"Error deleting fruit: {str(e)}", "error")
     finally:
         conn.close()
 

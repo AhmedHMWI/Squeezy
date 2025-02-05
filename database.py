@@ -1,43 +1,33 @@
-# import mysql.connector
-# import os
-# from dotenv import load_dotenv
-
-# load_dotenv()
-
-# def get_db_connection():
-#     connection = mysql.connector.connect(
-#         host=os.getenv("DB_HOST", "localhost"),
-#         user=os.getenv("DB_USER", "root"),
-#         password=os.getenv("DB_PASSWORD", ""),
-#         database=os.getenv("DB_NAME", "juice_store")
-#     )
-#     return connection
-
-
-
-import mysql.connector
 import os
+import mysql.connector
 import bcrypt
 from dotenv import load_dotenv
 
-# ✅ تحميل بيانات الاتصال من .env
+# ✅ Load environment variables from .env
 load_dotenv()
 
 def get_db_connection():
-    """ إنشاء اتصال بقاعدة البيانات """
-    connection = mysql.connector.connect(
-        host=os.getenv("DB_HOST", "localhost"),
-        user=os.getenv("DB_USER", "root"),
-        password=os.getenv("DB_PASSWORD", ""),
-        database=os.getenv("DB_NAME", "juice_store")
-    )
-    return connection
+    """ ✅ Create and return a database connection """
+    try:
+        connection = mysql.connector.connect(
+            host=os.getenv("DB_HOST", "localhost"),
+            user=os.getenv("DB_USER", "root"),
+            password=os.getenv("DB_PASSWORD", ""),
+            database=os.getenv("DB_NAME", "juice_store"),
+        )
+        return connection
+    except mysql.connector.Error as e:
+        print(f"❌ Database Connection Error: {e}")
+        return None  # ✅ Return None instead of breaking the app
 
 def create_tables():
-    """ إنشاء الجداول في قاعدة البيانات """
+    """ ✅ Create necessary tables in the database """
     conn = get_db_connection()
+    if not conn:
+        print("❌ Unable to connect to database. Tables were not created.")
+        return
+    
     cursor = conn.cursor()
-
     tables = [
         """
         CREATE TABLE IF NOT EXISTS users (
@@ -102,82 +92,89 @@ def create_tables():
         """
     ]
 
-    for table in tables:
-        cursor.execute(table)
-
-    conn.commit()
-    cursor.close()
-    conn.close()
-    print("✅ Tables created successfully!")
+    try:
+        for table in tables:
+            cursor.execute(table)
+        conn.commit()
+        print("✅ Tables created successfully!")
+    except mysql.connector.Error as e:
+        print(f"❌ Error creating tables: {e}")
+    finally:
+        cursor.close()
+        conn.close()
 
 def seed_data():
-    """ إدخال بيانات تجريبية في الجداول """
+    """ ✅ Insert initial test data into the database """
     conn = get_db_connection()
+    if not conn:
+        print("❌ Unable to connect to database. Seeding data failed.")
+        return
+    
     cursor = conn.cursor()
 
-    # ✅ حذف البيانات القديمة لمنع أخطاء المفتاح الأجنبي
-    cursor.execute("DELETE FROM juice_fruits")
-    cursor.execute("DELETE FROM order_items")
-    cursor.execute("DELETE FROM orders")
-    cursor.execute("DELETE FROM juices")
-    cursor.execute("DELETE FROM fruits")
-    cursor.execute("DELETE FROM users")
-    conn.commit()  # ✅ تأكيد الحذف قبل الإدخال الجديد
+    try:
+        # ✅ Delete existing data (to prevent foreign key issues)
+        cursor.execute("DELETE FROM juice_fruits")
+        cursor.execute("DELETE FROM order_items")
+        cursor.execute("DELETE FROM orders")
+        cursor.execute("DELETE FROM juices")
+        cursor.execute("DELETE FROM fruits")
+        cursor.execute("DELETE FROM users")
+        conn.commit()
 
-    # ✅ تشفير كلمات المرور قبل إدخالها في قاعدة البيانات
-    def hash_password(password):
-        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        # ✅ Hash passwords securely
+        def hash_password(password):
+            return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-    # ✅ إدخال بيانات المستخدمين أولًا
-    users = [
-        ("Ahmed", "ahmed@example.com", hash_password("admin123"), "admin"),
-        ("Amr", "amr@example.com", hash_password("amr123"), "user"),
-        ("Hashem", "hashem@example.com", hash_password("hashem123"), "user")
-    ]
-    cursor.executemany("INSERT INTO users (name, email, password, role) VALUES (%s, %s, %s, %s)", users)
-    conn.commit()  # ✅ تأكيد الإدخال
+        # ✅ Insert users
+        users = [
+            ("Ahmed", "ahmed@example.com", hash_password("admin123"), "admin"),
+            ("Amr", "amr@example.com", hash_password("amr123"), "user"),
+            ("Hashem", "hashem@example.com", hash_password("hashem123"), "user")
+        ]
+        cursor.executemany("INSERT INTO users (name, email, password, role) VALUES (%s, %s, %s, %s)", users)
+        conn.commit()
 
-    # ✅ جلب معرفات المستخدمين بعد إدخالهم
-    cursor.execute("SELECT id FROM users WHERE email = 'ahmed@example.com'")
-    admin_result = cursor.fetchone()
-    admin_id = admin_result[0] if admin_result else None
+        # ✅ Get user IDs
+        cursor.execute("SELECT id, email FROM users")
+        user_data = {email: user_id for user_id, email in cursor.fetchall()}
 
-    cursor.execute("SELECT id FROM users WHERE email = 'amr@example.com'")
-    user1_result = cursor.fetchone()
-    user1_id = user1_result[0] if user1_result else None
+        admin_id = user_data.get("ahmed@example.com")
+        user1_id = user_data.get("amr@example.com")
+        user2_id = user_data.get("hashem@example.com")
 
-    cursor.execute("SELECT id FROM users WHERE email = 'hashem@example.com'")
-    user2_result = cursor.fetchone()
-    user2_id = user2_result[0] if user2_result else None
+        if not all([admin_id, user1_id, user2_id]):
+            print("❌ Error: User insertion failed!")
+            return
 
-    if not all([admin_id, user1_id, user2_id]):
-        print("❌ Error: One or more users were not inserted correctly!")
-        return
+        print(f"✅ Users inserted successfully! (Admin: {admin_id}, User1: {user1_id}, User2: {user2_id})")
 
-    print(f"✅ Users inserted successfully! (Admin ID: {admin_id}, User1 ID: {user1_id}, User2 ID: {user2_id})")
+        # ✅ Insert fruits
+        fruits = [
+            (admin_id, "Apple", 1.5, 50),
+            (admin_id, "Banana", 0.8, 100),
+            (user1_id, "Strawberry", 2.0, 30),
+            (user1_id, "Mango", 2.5, 25)
+        ]
+        cursor.executemany("INSERT INTO fruits (user_id, name, price, quantity) VALUES (%s, %s, %s, %s)", fruits)
 
-    # ✅ إدخال بيانات الفواكه بعد التأكد من وجود المستخدمين
-    fruits = [
-        (admin_id, "Apple", 1.5, 50),
-        (admin_id, "Banana", 0.8, 100),
-        (user1_id, "Strawberry", 2.0, 30),
-        (user1_id, "Mango", 2.5, 25)
-    ]
-    cursor.executemany("INSERT INTO fruits (user_id, name, price, quantity) VALUES (%s, %s, %s, %s)", fruits)
+        print("✅ Fruits inserted successfully!")
 
-    print("✅ Fruits inserted successfully!")
+        # ✅ Insert juices
+        juices = [
+            (admin_id, "Mango Juice", 5.0),
+            (user1_id, "Strawberry Banana Mix", 6.0)
+        ]
+        cursor.executemany("INSERT INTO juices (user_id, name, price) VALUES (%s, %s, %s)", juices)
 
-    # ✅ إدخال بيانات العصائر
-    juices = [
-        (admin_id, "Mango Juice", 5.0),
-        (user1_id, "Strawberry Banana Mix", 6.0)
-    ]
-    cursor.executemany("INSERT INTO juices (user_id, name, price) VALUES (%s, %s, %s)", juices)
+        conn.commit()
+        print("✅ Seed data inserted successfully!")
 
-    conn.commit()
-    cursor.close()
-    conn.close()
-    print("✅ Seed data inserted successfully!")
+    except mysql.connector.Error as e:
+        print(f"❌ Database Error while seeding: {e}")
+    finally:
+        cursor.close()
+        conn.close()
 
 if __name__ == "__main__":
     create_tables() 

@@ -9,7 +9,6 @@
 </head>
 <body class="bg-light">
 
-    <!-- ✅ شريط التنقل -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="#">Admin Dashboard</a>
@@ -17,7 +16,7 @@
                 <span class="navbar-text text-light me-3">
                     Welcome, <strong>{{ user }}</strong>
                 </span>
-                <a href="{{ url_for('auth.logout') }}" class="btn btn-danger">Logout</a> <!-- ✅ إصلاح زر تسجيل الخروج -->
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-danger">Logout</a>
             </div>
         </div>
     </nav>
@@ -25,7 +24,6 @@
     <div class="container mt-5">
         <h2 class="text-center">Manage Fruits</h2>
 
-        <!-- ✅ عرض رسائل Flash -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="mt-3">
@@ -36,7 +34,6 @@
             {% endif %}
         {% endwith %}
 
-        <!-- ✅ نموذج إضافة فاكهة جديدة -->
         <div class="card shadow-lg p-4 mt-4">
             <h4>Add New Fruit</h4>
             <form method="POST" action="{{ url_for('admin.add_fruit') }}" enctype="multipart/form-data">
@@ -60,7 +57,6 @@
             </form>
         </div>
 
-        <!-- ✅ عرض الفواكه المتاحة -->
         <div class="card shadow-lg p-4 mt-4">
             <h4>Available Fruits</h4>
 
@@ -79,7 +75,7 @@
                     <tbody>
                         {% for fruit in fruits %}
                         <tr>
-                            <td>{{ loop.index }}</td> <!-- ✅ تحسين العرض بإضافة رقم تسلسلي -->
+                            <td>{{ loop.index }}</td>
                             <td>
                                 {% if fruit.image_url %}
                                     <img src="{{ url_for('static', filename=fruit.image_url) }}" 
