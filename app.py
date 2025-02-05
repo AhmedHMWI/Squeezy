@@ -27,10 +27,8 @@ app.register_blueprint(juice_bp, url_prefix='/juice')
 
 @app.route('/')
 def index():
-    """Redirect to user home or login if not logged in."""
-    if 'user_id' in session:
-        return redirect(url_for('user_dashboard'))
-    return redirect(url_for('auth.login'))
+    """Render home page for everyone."""
+    return render_template('home.html')
 
 
 @app.route('/dashboard/user')

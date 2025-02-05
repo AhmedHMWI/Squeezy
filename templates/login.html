@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -39,64 +39,80 @@
         }
     </style>
 </head>
-<body class="d-flex justify-content-center align-items-center vh-100">
+<body class="d-flex justify-content-center align-items-center vh-100"> -->
 
-    <div class="card shadow-lg p-4 login-card">
-        <h2 class="text-center mb-4">Login to Juice Store</h2>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="mt-3">
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }} text-center">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
 
-        <form method="POST" action="{{ url_for('auth.login') }}">
-            <div class="mb-3">
-                <label for="email" class="form-label">Email Address</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
-                </div>
+
+    {% extends 'base.html' %}
+
+    {% block body %}
+        <!-- Main content starts here -->
+        <div class="container mt-5">
+            <div class="card shadow-lg p-4 login-card mx-auto">
+                <h2 class="text-center mb-4">Login to Juice Store</h2>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="mt-3">
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} text-center">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('auth.login') }}">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                            <span class="input-group-text toggle-password">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+    
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                </form>
+    
+                <p class="text-center mt-3"><a href="#">Forgot password?</a></p>
             </div>
+        </div>
+    
+        <!-- Password Toggle Script -->
+        <script>
+            document.querySelector('.toggle-password').addEventListener('click', function () {
+                const passwordField = document.getElementById('password');
+                const icon = this.querySelector('i');
+    
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordField.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        </script>
+    {% endblock %}
+    
 
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
-                    <span class="input-group-text toggle-password">
-                        <i class="fas fa-eye"></i>
-                    </span>
-                </div>
-            </div>
 
-            <button type="submit" class="btn btn-primary w-100">Login</button>
-        </form>
 
-        <p class="text-center mt-3"><a href="#">Forgot password?</a></p>
-    </div>
+    
 
-    <script>
-        document.querySelector('.toggle-password').addEventListener('click', function () {
-            const passwordField = document.getElementById('password');
-            const icon = this.querySelector('i');
-
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        });
-    </script>
-
-    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 </body>
-</html>
+</html> -->

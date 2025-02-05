@@ -73,14 +73,14 @@ def create_juice():
     selected_fruits = request.form.getlist('selected_fruits')
     image_url = ''  # ✅ استخدم سلسلة فارغة بدلاً من None
 
-    # ✅ معالجة رفع الصورة
-    if 'image' in request.files:
-        file = request.files['image']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            filepath = os.path.join(UPLOAD_FOLDER, filename)
-            file.save(filepath)
-            image_url = f"uploads/{filename}"  # ✅ تأكد من أن المسار نسبي للصورة
+    # if 'image' in request.files:
+    file = request.files['image']
+    # if file:
+    filename = secure_filename(file.filename)
+    filepath = os.path.join(UPLOAD_FOLDER, filename)
+    file.save(filepath)
+    image_url = f"uploads/{filename}" 
+    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
     if not selected_fruits:
         flash("Please select at least one fruit!", "error")
@@ -125,7 +125,6 @@ def edit_juice(juice_id):
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
 
-        # ✅ جلب بيانات العصير الحالي
         cursor.execute("SELECT * FROM juices WHERE id = %s", (juice_id,))
         juice = cursor.fetchone()
         if not juice:
@@ -141,9 +140,8 @@ def edit_juice(juice_id):
         if request.method == 'POST':
             new_name = request.form['juice_name']
             new_selected_fruits = request.form.getlist('selected_fruits')
-            new_image_url = juice['image_url'] if juice['image_url'] else '' # احتفظ بالصورة القديمة
+            new_image_url = juice['image_url'] if juice['image_url'] else '' 
 
-            # ✅ إذا تم رفع صورة جديدة، قم بتحديث `image_url`
             if 'image' in request.files:
                 file = request.files['image']
                 if file and allowed_file(file.filename):
@@ -152,11 +150,9 @@ def edit_juice(juice_id):
                     file.save(filepath)
                     new_image_url = f"uploads/{filename}"
 
-            # ✅ تحديث البيانات في قاعدة البيانات
             cursor.execute("UPDATE juices SET name = %s, image_url = %s WHERE id = %s", 
                         (new_name, new_image_url, juice_id))
 
-            # ✅ حذف الفواكه القديمة وإضافة الجديدة
             cursor.execute("DELETE FROM juice_fruits WHERE juice_id = %s", (juice_id,))
             for fruit_id in new_selected_fruits:
                 cursor.execute("INSERT INTO juice_fruits (juice_id, fruit_id) VALUES (%s, %s)", (juice_id, fruit_id))
@@ -278,6 +274,5 @@ def get_all_juices():
 
 @user_bp.route('/')
 def home():
-    """ الصفحة الرئيسية - تعرض جميع العصائر """
     juices = get_all_juices()
     return render_template('home.html', juices=juices)

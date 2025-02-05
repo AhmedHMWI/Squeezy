@@ -10,7 +10,7 @@ def get_all_fruits():
         cursor = conn.cursor(dictionary=True)
         cursor.execute("SELECT * FROM fruits")
         fruits = cursor.fetchall()
-        print("✅ Fruits fetched successfully!")  # Debugging
+        # print("✅ Fruits fetched successfully!")  
         return fruits
     except Exception as e:
         print(f"❌ Database Error: {e}")
@@ -30,9 +30,6 @@ def create_juice():
     name = request.form.get('juice_name')
     fruit_ids = request.form.getlist('selected_fruits[]')
 
-    print("📝 Form Submitted!")  # Debugging
-    print("🛠️ Session Data:", session)  # Debugging session data
-    print("📩 Request Data:", request.form)  # Debugging form data
 
     if not name or not fruit_ids:
         flash("❌ Please select at least one fruit and enter a juice name.", "danger")
@@ -47,8 +44,8 @@ def create_juice():
         # Check if the user exists before inserting the juice
         cursor.execute("SELECT id FROM users WHERE id = %s", (user_id,))
         if not cursor.fetchone():
-            print("❌ Invalid user_id:", user_id)
-            flash("❌ User does not exist!", "danger")
+            # print("❌ Invalid user_id:", user_id)
+            # flash("❌ User does not exist!", "danger")
             return redirect(url_for('user.user_dashboard'))
 
         # Insert juice into the database

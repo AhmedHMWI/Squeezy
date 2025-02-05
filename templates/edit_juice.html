@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,7 +6,11 @@
     <title>Edit Juice</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 </head>
-<body class="bg-light">
+<body class="bg-light"> -->
+
+    {% extends 'base.html' %}
+
+    {% block body %}
 
     <div class="container mt-5">
         <h2 class="text-center">Edit Juice</h2>
@@ -36,5 +40,4 @@
         </div>
     </div>
 
-</body>
-</html>
+    {% endblock %}
