@@ -12,18 +12,18 @@ admin_bp = Blueprint('admin', __name__, url_prefix='/admin', template_folder='..
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def get_all_fruits():
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM fruits")
-        fruits = cursor.fetchall()
-        return fruits
-    except Exception as e:
-        print(f"Database Error: {e}")
-        return []
-    finally:
-        conn.close()
+# def get_all_fruits():
+#     try:
+#         conn = get_db_connection()
+#         cursor = conn.cursor(dictionary=True)
+#         cursor.execute("SELECT * FROM fruits")
+#         fruits = cursor.fetchall()
+#         return fruits
+#     except Exception as e:
+#         print(f"Database Error: {e}")
+#         return []
+#     finally:
+#         conn.close()
 
 @admin_bp.route('/dashboard')
 def admin_dashboard():
@@ -44,7 +44,7 @@ def add_fruit():
     name = request.form.get('name')
     price = request.form.get('price')
     quantity = request.form.get('quantity')
-    image_url = None  
+    image_url = None 
 
     if 'image' in request.files:
         file = request.files['image']
@@ -101,7 +101,7 @@ def edit_fruit(fruit_id):
                     image_url = f"uploads/{filename}" 
 
             cursor.execute("UPDATE fruits SET name = %s, price = %s, quantity = %s, image_url = %s WHERE id = %s",
-                           (name, price, quantity, image_url, fruit_id))
+                        (name, price, quantity, image_url, fruit_id))
             conn.commit()
 
             flash("Fruit updated successfully!", "success")
