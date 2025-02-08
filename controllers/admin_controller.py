@@ -44,7 +44,7 @@ def add_fruit():
     name = request.form.get('name')
     price = request.form.get('price')
     quantity = request.form.get('quantity')
-    image_url = None  
+    image_url = None 
 
     if 'image' in request.files:
         file = request.files['image']
@@ -101,7 +101,7 @@ def edit_fruit(fruit_id):
                     image_url = f"uploads/{filename}" 
 
             cursor.execute("UPDATE fruits SET name = %s, price = %s, quantity = %s, image_url = %s WHERE id = %s",
-                           (name, price, quantity, image_url, fruit_id))
+                        (name, price, quantity, image_url, fruit_id))
             conn.commit()
 
             flash("Fruit updated successfully!", "success")

@@ -1,33 +1,14 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Manage Fruits</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body class="bg-light"> -->
-
-    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">Admin Dashboard</a>
-            <div class="d-flex">
-                <span class="navbar-text text-light me-3">
-                    Welcome, <strong>{{ user }}</strong>
-                </span>
-                <a href="{{ url_for('auth.logout') }}" class="btn btn-danger">Logout</a>
-            </div>
-        </div>
-    </nav> -->
-
     {% extends 'base.html' %}
+
+    {% block title %}Admin Dashboard{% endblock %}
+
+    {% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
 
     {% block body %}
 
 
     <div class="container mt-5">
-        <h2 class="text-center">Manage Fruits</h2>
+        <h2 class="text-center">Admin Dashboard</h2>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -114,7 +95,3 @@
     </div>
 
     {% endblock %}
-
-    <!-- <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-</body>
-</html> -->

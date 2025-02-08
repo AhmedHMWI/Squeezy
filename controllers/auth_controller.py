@@ -2,7 +2,7 @@ from flask import Blueprint, request, render_template, redirect, url_for, sessio
 from database import get_db_connection
 import bcrypt
 
-auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
+auth_bp = Blueprint('auth', __name__, url_prefix='/auth', template_folder='../templates')
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -12,7 +12,6 @@ def register():
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
 
-        # ✅ التحقق من إدخال جميع البيانات
         if not name or not email or not password or not confirm_password:
             flash("❌ All fields are required!", "error")
             return render_template('register.html')
@@ -135,4 +134,4 @@ def logout():
     """تسجيل الخروج"""
     session.clear()
     flash("✅ You have been logged out!", "info")
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('home.home'))

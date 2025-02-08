@@ -1,42 +1,26 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juice Page</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-
-<nav>
-    <a href="#">Home</a>
-    <a href="{{ url_for('auth.login') }}">Login</a>
-    <a href="{{ url_for('auth.register') }}">Register</a>
-    <a href="#">Contact Us</a>
-</nav> -->
-
 {% extends 'base.html' %}
+
+{% block title %}Juice Store - Home{% endblock %}
+
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">{% endblock %}
 
 {% block body %}
 
 <div class="juice-container">
-    {% for juice in juices %}
+{% for juice in juices %}
+
     <div class="juice-card">
-        <img src="{{ juice.image_url }}" alt="{{ juice.name }}" class="juice-image">
+        {% if juice.image_url %}
+        
+        <img src="{{ url_for('static', filename=juice.image_url) }}" alt="{{ juice.name }}" class="juice-image">
+        {% else %}
+        <img src="{{ url_for('static', filename='images/default.png') }}" alt="{{ juice.name }}" class="juice-image">
+        {% endif %}
         <h3>{{ juice.name }}</h3>
         <p>{{ juice.fruit_names }}</p>
     </div>
-    {% endfor %}
+{% endfor %}
 </div>
 
 {% endblock %}
 
-
-<!-- <footer>
-    <p>&copy; 2025 Our Juices - All rights reserved</p>
-</footer>
-
-</body>
-</html> -->
