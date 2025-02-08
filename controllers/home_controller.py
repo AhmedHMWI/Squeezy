@@ -34,4 +34,4 @@ def home():
         if conn:
             conn.close()
 
-    return render_template('home.html', juices=juices)
+    return render_template('home.html', juices=juices, user=session.get('user_name', 'Guest'))

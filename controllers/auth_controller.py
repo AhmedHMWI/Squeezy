@@ -134,4 +134,4 @@ def logout():
     """تسجيل الخروج"""
     session.clear()
     flash("✅ You have been logged out!", "info")
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('home.home'))

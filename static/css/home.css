@@ -1,0 +1,36 @@
+.juice-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.juice-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.juice-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.juice-card h3 {
+    padding: 10px;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.juice-card p {
+    padding: 0 10px 10px;
+    color: #666;
+    text-align: center;
+}
+
+.juice-card:hover {
+    transform: scale(1.05);
+}

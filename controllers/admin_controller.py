@@ -12,18 +12,18 @@ admin_bp = Blueprint('admin', __name__, url_prefix='/admin', template_folder='..
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# def get_all_fruits():
-#     try:
-#         conn = get_db_connection()
-#         cursor = conn.cursor(dictionary=True)
-#         cursor.execute("SELECT * FROM fruits")
-#         fruits = cursor.fetchall()
-#         return fruits
-#     except Exception as e:
-#         print(f"Database Error: {e}")
-#         return []
-#     finally:
-#         conn.close()
+def get_all_fruits():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM fruits")
+        fruits = cursor.fetchall()
+        return fruits
+    except Exception as e:
+        print(f"Database Error: {e}")
+        return []
+    finally:
+        conn.close()
 
 @admin_bp.route('/dashboard')
 def admin_dashboard():

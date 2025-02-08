@@ -1,5 +1,8 @@
-
     {% extends 'base.html' %}
+
+    {% block title %}Edit Fruit{% endblock %}
+    
+    {% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/edit.css') }}">{% endblock %}
 
     {% block body %}
 

@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block title %}Juice Store - Home{% endblock %}
+
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">{% endblock %}
+
 {% block body %}
 
 <div class="juice-container">
@@ -17,7 +21,6 @@
     </div>
 {% endfor %}
 </div>
-
 
 {% endblock %}
 

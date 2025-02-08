@@ -1,55 +1,13 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Juice Store</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
-
-    <style>
-        body {
-            background: linear-gradient(to right, #ff9966, #ff5e62);
-            font-family: 'Arial', sans-serif;
-        }
-        .login-card {
-            max-width: 400px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-        }
-        .input-group-text {
-            background: #ff9966;
-            color: white;
-            border: none;
-        }
-        .btn-primary {
-            background: #ff5e62;
-            border: none;
-        }
-        .btn-primary:hover {
-            background: #ff3e50;
-        }
-        .toggle-password {
-            cursor: pointer;
-            color: #ff5e62;
-        }
-    </style>
-</head>
-<body class="d-flex justify-content-center align-items-center vh-100"> -->
-
-
-
-
     {% extends 'base.html' %}
+
+    {% block title %}Login{% endblock %}
+
+    {% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">{% endblock %}
 
     {% block body %}
         <!-- Main content starts here -->
         <div class="container mt-5">
-            <div class="card shadow-lg p-4 login-card mx-auto">
+            <div class="card shadow-lg p-4 auth-card mx-auto">
                 <h2 class="text-center mb-4">Login to Juice Store</h2>
 
                 {% with messages = get_flashed_messages(with_categories=true) %}
@@ -85,7 +43,7 @@
                     <button type="submit" class="btn btn-primary w-100">Login</button>
                 </form>
     
-                <p class="text-center mt-3"><a href="#">Forgot password?</a></p>
+                <p class="text-center mt-3">You don't have an account? <a href="{{ url_for('auth.register') }}">Sign up</a></p>
             </div>
         </div>
     
@@ -107,12 +65,3 @@
             });
         </script>
     {% endblock %}
-    
-
-
-
-    
-
-    <!-- <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-</body>
-</html> -->

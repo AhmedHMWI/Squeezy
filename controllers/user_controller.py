@@ -30,7 +30,7 @@ def allowed_file(filename):
 @user_bp.route('/dashboard')
 def user_dashboard():
     if 'user_id' not in session:
-        flash("❌ You must log in first!", "error")
+        # flash("❌ You must log in first!", "error")
         return redirect(url_for('auth.login'))
 
     conn = get_db_connection()
@@ -124,7 +124,7 @@ def create_juice():
         cursor.execute("UPDATE juices SET price = %s WHERE id = %s", (total_price, juice_id))
         conn.commit()
 
-        print(f"✅ Juice Created: {name}, Total Price: {total_price}")  # Debugging
+        print(f"✅ Juice Created: {juice_name}, Total Price: {total_price}")  # Debugging
         flash("✅ Your juice has been created successfully!", "success")
 
     except Exception as e:
@@ -258,7 +258,7 @@ def get_user_juices(user_id):
         cursor.execute(query, (user_id,))
         juices = cursor.fetchall()
 
-        print(f"DEBUG: Juices fetched for user {user_id}: {juices}")  # ✅ تحقق من البيانات المسترجعة
+        print(f"DEBUG: Juices fetched for user {user_id}: {juices}") 
 
         return juices
     except Exception as e:
