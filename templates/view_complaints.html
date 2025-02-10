@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}View Complaints{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">View All Complaints</h2>
+
+    {% if complaints %}
+        <ul class="list-group">
+            {% for complaint in complaints %}
+                <li class="list-group-item">
+                    <strong>{{ complaint.name }}</strong> ({{ complaint.email }})<br>
+                    <p>{{ complaint.message }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No complaints found.</p>
+    {% endif %}
+</div>
+{% endblock %}

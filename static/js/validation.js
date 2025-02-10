@@ -1,67 +1,91 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("login-form");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
+const passwordPattern = /(?=^.{10,}$)(?=.*?\d)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[^a-zA-Z\d])/;
+const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+const usernamePattern = /^\S+$/;
+
+// Login form validation
+function validateLoginForm() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const errorMessage = document.getElementById("error-message");
+
+  errorMessage.style.display = "none";
+  errorMessage.innerHTML = "";
+
+  if (!email && !password) {
+    errorMessage.style.display = "block";
+    errorMessage.innerHTML = "All fields are required.";
+    return false;
+  }
+  if (!email.match(emailPattern)) {
+    errorMessage.style.display = "block";
+    errorMessage.innerHTML = "Please enter a valid email address.";
+    return false;
+  }
+
+  if (!password) {
+    errorMessage.style.display = "block";
+    errorMessage.innerHTML = "Password cannot be empty.";
+    return false;
+  }
+
+  return true;
+}
+
+
+
+// register from validation
+function validateRegisterForm() {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirm_password = document.getElementById("confirm_password").value;
+  
+    const nameError = document.getElementById("name-error");
     const emailError = document.getElementById("email-error");
     const passwordError = document.getElementById("password-error");
-
-    // Email validation function
-    function validateEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+    const confirmPasswordError = document.getElementById(
+      "confirm_password-error"
+    );
+    let count = 0;
+  
+    nameError.innerHTML = "";
+    emailError.innerHTML = "";
+    passwordError.innerHTML = "";
+    confirmPasswordError.innerHTML = "";
+  
+    if (!name) {
+      nameError.innerHTML = "Name cannot be empty.";
+      count++;
     }
 
-    // Validate the form when the submit button is clicked
-    form.addEventListener("submit", function (e) {
-        let isValid = true;
-        emailError.textContent = "";
-        passwordError.textContent = "";
-
-        // Validate email
-        if (!emailInput.value.trim()) {
-            emailError.textContent = "يجب إدخال البريد الإلكتروني.";
-            isValid = false;
-        } else if (!validateEmail(emailInput.value.trim())) {
-            emailError.textContent = "يرجى إدخال بريد إلكتروني صحيح.";
-            isValid = false;
-        }
-
-        // Validate password
-        if (!passwordInput.value.trim()) {
-            passwordError.textContent = "يجب إدخال كلمة المرور.";
-            isValid = false;
-        } else if (passwordInput.value.length < 6) {
-            passwordError.textContent = "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.";
-            isValid = false;
-        }
-
-        if (!isValid) {
-            e.preventDefault(); // Prevent form submission if there are errors
-        }
-
-        // Hide error messages after 2 seconds
-        if (emailError.textContent) {
-            setTimeout(function () {
-                emailError.textContent = "";
-            }, 2000); // 2 seconds
-        }
-
-        if (passwordError.textContent) {
-            setTimeout(function () {
-                passwordError.textContent = "";
-            }, 2000); // 2 seconds
-        }
-    });
-
-    // Show/hide password
-    document.querySelector('.toggle-password').addEventListener('click', function () {
-        const icon = this.querySelector('i');
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            icon.classList.replace('fa-eye', 'fa-eye-slash');
-        } else {
-            passwordInput.type = "password";
-            icon.classList.replace('fa-eye-slash', 'fa-eye');
-        }
-    });
-});
+    if (!email) {
+      emailError.innerHTML = "Email cannot be empty.";
+      count++;
+    } else if (!email.match(emailPattern)) {
+      emailError.innerHTML = "Please enter a valid email address.";
+      count++;
+    }
+  
+    if (!password) {
+      passwordError.innerHTML = "Password cannot be empty.";
+      count++;
+    } else if (!password.match(passwordPattern)) {
+      passwordError.innerHTML =
+        "Password must be at least 10 characters, contain one uppercase letter, one lowercase letter, one digit, and one special character.";
+      count++;
+    }
+  
+    if (!confirm_password) {
+      confirmPasswordError.innerHTML = "Confirm Password cannot be empty.";
+      count++;
+    }
+    if (password != confirm_password) {
+      confirmPasswordError.innerHTML = "Passwords do not match.";
+      count++;
+    }
+    // return count < 0
+    if (count > 0) {
+      return false;
+    }
+    return true;
+  }

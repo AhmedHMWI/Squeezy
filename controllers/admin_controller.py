@@ -115,18 +115,26 @@ def edit_fruit(fruit_id):
     finally:
         conn.close()
 
-@admin_bp.route('/delete_fruit/<int:fruit_id>', methods=['POST'])
+@admin_bp.route('/fruit/delete/<int:fruit_id>', methods=['POST'])
 def delete_fruit(fruit_id):
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
+    """ Delete the fruit """
+    if 'user_id' not in session or session['role'] != 'admin':
+        flash("You must be logged in as an admin to perform this action.", "error")
+        return redirect(url_for('auth.login'))
 
-        cursor.execute("DELETE FROM fruits WHERE id=%s", (fruit_id,))
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        # Delete the fruit
+        cursor.execute("DELETE FROM fruits WHERE id = %s", (fruit_id,))
         conn.commit()
-        flash("Fruit deleted successfully!", "danger")
+        flash("✅ Fruit deleted successfully!", "danger")
     except Exception as e:
-        flash(f"Error deleting fruit: {str(e)}", "error")
+        flash(f"❌ Error deleting fruit: {str(e)}", "error")
     finally:
+        cursor.close()
         conn.close()
 
     return redirect(url_for('admin.admin_dashboard'))
+

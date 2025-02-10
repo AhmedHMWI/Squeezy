@@ -1,8 +1,10 @@
-{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+{% endblock %}
 
 {% block navbar %}
 <nav class="navbar navbar-expand-lg fixed-top">
-    <div class="container">
+    <div class="container-fluid px-5">
         <!-- Logo and Text -->
         <a class="navbar-logo" href="{{ url_for('home.home') }}">
             <div class="logo-container">
@@ -31,6 +33,12 @@
                         <li class="nav-item">
                             <a href="{{ url_for('user.user_dashboard') }}" class="me-3 {% if request.endpoint == 'user.user_dashboard' %}active{% endif %}">Juices Dashboard</a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('complaints.submit_complaint') }}" class="me-3 {% if request.endpoint == 'complaints.submit_complaint' %}active{% endif %}">Complaints</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('complaints.view_complaints') }}" class="me-3 {% if request.endpoint == 'complaints.view_complaints' %}active{% endif %}">Complaints List</a>
+                        </li>
                     <!-- User role links -->
                     {% elif session['role'] == 'user' %}
                         <li class="nav-item">
@@ -50,7 +58,7 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item mt-2">
                         <span class="navbar-text fs-5 text-light me-3">
-                            Welcome, <strong>{{ user }}</strong>
+                            Welcome, <strong>{{ session['user_name'] }}</strong>
                         </span>
                     </li>
                     <li class="nav-item">

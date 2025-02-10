@@ -51,22 +51,46 @@ body {
 h2 {
     color: var(--accent-color);
     margin-bottom: 20px;
+    font-weight: 800;
 }
 
 
 /* Flash message styling */
-/* .flash-message {
+.flash-message {
     transition: opacity 1s ease, visibility 1s ease;
-} */
-
-/* Hide flash messages after fading out */
-/* .flash-message.fade-out {
-    opacity: 0;
-    visibility: hidden;
+    padding: 15px;
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 20px;
+    font-size: 16px;
+    visibility: visible; /* Ensure the message is visible initially */
+    opacity: 1; /* Full opacity initially */
 }
- */
 
+.flash-message.hidden {
+    visibility: hidden;
+    opacity: 0;
+}
 
+/* Success Message (Green) */
+.flash-message-success {
+    background-color: #3a9f3d; /* Green for success */
+}
+
+/* Error Message (Red) */
+.flash-message-error {
+    background-color: #f44336; /* Red for error */
+}
+
+/* Info Message (Blue) */
+.flash-message-info {
+    background-color: #2196F3; /* Blue for info */
+}
+
+/* Add hover effects for better user experience */
+.flash-message:hover {
+    opacity: 0.9;
+}
 
 /* Flash message container */
 .flash-message-container {
@@ -80,34 +104,7 @@ h2 {
     display: none; /* Initially hidden */
 }
 
-/* Flash message styling */
-.flash-message {
-    background-color: #44c767;  /* Green color for success */
-    color: white;
-    padding: 15px;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    animation: fadeInOut 5s ease-in-out; /* Animation */
-}
 
 .flash-message p {
     margin: 0;
-}
-
-/* Keyframes for fading in and out */
-@keyframes fadeInOut {
-    0% {
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-    }
-    90% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
 }

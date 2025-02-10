@@ -1,9 +1,3 @@
-/* General Styling */
-body {
-    background-color: var(--background-dark);
-    font-family: 'Arial', sans-serif;
-}
-
 /* Create Your Juice CTA Section */
 .cta-section {
     background: linear-gradient(to right, var(--primary-dark), var(--primary-color));

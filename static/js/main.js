@@ -1,14 +1,3 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const flashMessages = document.querySelectorAll('.flash-message');
-
-    flashMessages.forEach(function(message) {
-        setTimeout(function() {
-            message.classList.add('fade-out');
-        }, 1500);
-    });
-});
-
-
 function setDeleteFormAction(actionUrl) {
     document.getElementById("deleteForm").action = actionUrl;
 }
@@ -41,15 +30,85 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+document.addEventListener('DOMContentLoaded', function () {
+    // Flash message fade-out behavior
+    const flashMessages = document.querySelectorAll('.flash-message');
+    flashMessages.forEach(function(message) {
+        setTimeout(function() {
+            message.classList.add('fade-out');
+        }, 1500);
+    });
+
+    // Toggle password visibility
+    const togglePassword = document.querySelector('.toggle-password');
+    if (togglePassword) {
+        togglePassword.addEventListener('click', function () {
+            const passwordField = document.getElementById('password');
+            const icon = this.querySelector('i');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+    }
+});
+
+
+
+
 
 document.addEventListener("DOMContentLoaded", function() {
-    const flashMessageContainer = document.getElementById("flash-message-container");
+    // Find all flash messages
+    const flashMessages = document.querySelectorAll('.flash-message');
 
-    if (flashMessageContainer && flashMessageContainer.querySelector(".flash-message")) {
-        flashMessageContainer.style.display = "block"; // Show flash message container
-        
+    flashMessages.forEach(function(message) {
+        // Set a timeout to hide the message after 1 second
         setTimeout(function() {
-            flashMessageContainer.style.display = "none"; // Hide after 5 seconds
-        }, 2000); // 5 seconds
-    }
+            message.classList.add('hidden'); // Apply the 'hidden' class to hide it
+        }, 1000); // 1000 ms = 1 second
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+// Modal for delete juice
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtons = document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#deleteConfirmModal"]');
+    const deleteForm = document.getElementById('deleteForm');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const juiceId = this.getAttribute('data-id');
+            // Set the form action dynamically based on the juice ID
+            deleteForm.action = '/user/juice/delete/' + juiceId;
+        });
+    });
+});
+
+
+
+// Modal for delete fruit
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtons = document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#deleteConfirmModal"]');
+    const deleteForm = document.getElementById('deleteForm');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const fruitId = this.getAttribute('data-id');
+            // Set the form action dynamically based on the fruit ID
+            deleteForm.action = '/admin/fruit/delete/' + fruitId;
+        });
+    });
 });

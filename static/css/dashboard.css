@@ -24,6 +24,7 @@ table th, table td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    font-size: large;
 }
 
 table th {
@@ -63,7 +64,7 @@ button {
 
 .btn-danger {
     background-color: var(--accent-color);
-    color: var(--text-color);
+    color: var(--card-bg);
     border: none;
 }
 

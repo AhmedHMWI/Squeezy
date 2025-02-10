@@ -1,16 +1,15 @@
-    {% extends 'base.html' %}
+{% extends 'base.html' %}
 
-    {% block title %}Admin Dashboard{% endblock %}
+{% block title %}Admin Dashboard{% endblock %}
 
-    {% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
 
-    {% block body %}
-
+{% block body %}
 
     <div class="container mt-5">
         <h2 class="text-center">Fruits Dashboard</h2>
 
-        <!-- {% with messages = get_flashed_messages(with_categories=true) %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="alert-container">
                     {% for category, message in messages %}
@@ -18,7 +17,7 @@
                     {% endfor %}
                 </div>
             {% endif %}
-        {% endwith %} -->
+        {% endwith %}
         <div id="flash-message-container" class="flash-message-container">
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -78,9 +77,9 @@
                                 {% if fruit.image_url %}
                                     <img src="{{ url_for('static', filename=fruit.image_url) }}" 
                                         alt="{{ fruit.name }}" 
-                                        class="img-thumbnail" width="80">
+                                        class="img-thumbnail" width="80"/>
                                 {% else %}
-                                    <span>No Image</span>
+                                <img src="{{ url_for('static', filename='images/default.png') }}" alt="No Image" style="width: 50px; height: 50px" />
                                 {% endif %}
                             </td>
                             <td>{{ fruit.name }}</td>
@@ -88,10 +87,12 @@
                             <td>{{ fruit.quantity }}</td>
                             <td>
                                 <a href="{{ url_for('admin.edit_fruit', fruit_id=fruit.id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                <form method="POST" action="{{ url_for('admin.delete_fruit', fruit_id=fruit.id) }}" style="display:inline;">
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
+                                <!-- Trigger for Modal -->
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal" data-id="{{ fruit.id }}">
+                                    Delete
+                                </button>
                             </td>
+                            
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -100,10 +101,12 @@
                 <div class="alert alert-warning text-center mt-3">
                     <h5>No fruits available.</h5>
                     <p>Start adding fruits now!</p>
-                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFruitModal">Add First Fruit</a>
                 </div>
             {% endif %}
         </div>
     </div>
 
-    {% endblock %}
+    {% include 'fruit_modal.html' %}
+    {% block fruit_modal %}{% endblock %}
+
+{% endblock %}

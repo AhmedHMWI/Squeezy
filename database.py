@@ -43,9 +43,10 @@ def create_tables():
         CREATE TABLE IF NOT EXISTS fruits (
             id INT AUTO_INCREMENT PRIMARY KEY,
             user_id INT,
-            name VARCHAR(100) NOT NULL,
+            name VARCHAR(100) NOT NULL UNIQUE,  -- Ensure fruit name is unique
             price DECIMAL(10,2) NOT NULL,
             quantity INT NOT NULL,
+            image_url VARCHAR(255) UNIQUE,  -- Ensure image_url is unique for fruits
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         )
@@ -54,8 +55,9 @@ def create_tables():
         CREATE TABLE IF NOT EXISTS juices (
             id INT AUTO_INCREMENT PRIMARY KEY,
             user_id INT,
-            name VARCHAR(100) NOT NULL,
+            name VARCHAR(100) NOT NULL UNIQUE,  -- Ensure juice name is unique
             price DECIMAL(10,2) NOT NULL,
+            image_url VARCHAR(255) UNIQUE,  -- Ensure image_url is unique for juices
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         )
@@ -69,29 +71,9 @@ def create_tables():
             FOREIGN KEY (juice_id) REFERENCES juices(id) ON DELETE CASCADE,
             FOREIGN KEY (fruit_id) REFERENCES fruits(id) ON DELETE CASCADE
         )
-        """,
-        """
-        CREATE TABLE IF NOT EXISTS orders (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            user_id INT NOT NULL,
-            total_price DECIMAL(10,2) NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-        )
-        """,
-        """
-        CREATE TABLE IF NOT EXISTS order_items (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            order_id INT NOT NULL,
-            juice_id INT NOT NULL,
-            quantity INT NOT NULL,
-            price DECIMAL(10,2) NOT NULL,
-            FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
-            FOREIGN KEY (juice_id) REFERENCES juices(id) ON DELETE CASCADE
-        )
         """
     ]
-
+    
     try:
         for table in tables:
             cursor.execute(table)
@@ -157,6 +139,7 @@ def seed_data():
             (user1_id, "Mango", 2.5, 25)
         ]
         cursor.executemany("INSERT INTO fruits (user_id, name, price, quantity) VALUES (%s, %s, %s, %s)", fruits)
+        conn.commit()
 
         print("✅ Fruits inserted successfully!")
 
@@ -166,15 +149,36 @@ def seed_data():
             (user1_id, "Strawberry Banana Mix", 6.0)
         ]
         cursor.executemany("INSERT INTO juices (user_id, name, price) VALUES (%s, %s, %s)", juices)
-
         conn.commit()
-        print("✅ Seed data inserted successfully!")
+
+        print("✅ Juices inserted successfully!")
+
+        # Get all juice and fruit IDs for creating juice_fruits
+        cursor.execute("SELECT id FROM juices WHERE user_id IN (%s, %s, %s)", (admin_id, user1_id, user2_id))
+        juice_ids = [juice[0] for juice in cursor.fetchall()]  # Use index 0 since fetchall returns tuples
+
+        cursor.execute("SELECT id FROM fruits WHERE user_id IN (%s, %s, %s)", (admin_id, user1_id, user2_id))
+        fruit_ids = [fruit[0] for fruit in cursor.fetchall()]  # Use index 0 since fetchall returns tuples
+
+        # ✅ Insert juice_fruits (using valid juice_id and fruit_id)
+        juice_fruits = []
+        for juice_id in juice_ids:
+            for fruit_id in fruit_ids:
+                juice_fruits.append((juice_id, fruit_id, 1))
+
+        cursor.executemany("INSERT INTO juice_fruits (juice_id, fruit_id, quantity) VALUES (%s, %s, %s)", juice_fruits)
+        conn.commit()
+
+        print("✅ Juice fruits inserted successfully!")
 
     except mysql.connector.Error as e:
         print(f"❌ Database Error while seeding: {e}")
     finally:
         cursor.close()
         conn.close()
+
+
+
 
 if __name__ == "__main__":
     create_tables() 

@@ -117,4 +117,10 @@
     .navbar-nav .nav-item .btn {
         margin: 10px 0;
     }
+
+    .navbar-nav .nav-item a {
+        margin: 10px 0;
+        font-size: smaller;
+    }
 }
+

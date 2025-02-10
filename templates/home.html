@@ -5,8 +5,9 @@
 {% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">{% endblock %}
 
 {% block body %}
-
+<div class="mt-5">
 <!-- Juice Container -->
+<h2 class="text-center">SQEEZY MENU</h2>
 <div class="juice-container container">
     {% for juice in juices %}
     <div class="juice-card">
@@ -32,5 +33,5 @@
         <a href="{{ url_for('auth.login') }}" class="cta-button">Get Started Now!</a>
     </div>
 </div>
-
+</div>
 {% endblock %}

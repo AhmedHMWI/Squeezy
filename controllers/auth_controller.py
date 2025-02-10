@@ -12,10 +12,22 @@ def register():
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
 
+        # Validate required fields
         if not name or not email or not password or not confirm_password:
             flash("All fields are required!", "error")
             return render_template('register.html')
 
+        # Validate password length
+        if len(password) < 8:
+            flash("Password must be at least 8 characters long.", "error")
+            return render_template('register.html')
+
+        # Validate password complexity (must contain letters and numbers)
+        if not any(c.isalpha() for c in password) or not any(c.isdigit() for c in password):
+            flash("Password must contain both letters and numbers.", "error")
+            return render_template('register.html')
+
+        # Validate password match
         if password != confirm_password:
             flash("Passwords do not match!", "error")
             return render_template('register.html')
@@ -26,25 +38,28 @@ def register():
             conn = get_db_connection()
             cursor = conn.cursor(dictionary=True)
 
+            # Check if email is already taken
             cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
             existing_user = cursor.fetchone()
-
             if existing_user:
-                flash("Email is already taken", "error")
+                flash("Email is already taken.", "error")
                 return render_template('register.html')
 
+            # Encrypt the password before saving
             try:
                 hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
             except Exception as hash_error:
-                flash("Error while encrypting the password!", "error")
+                flash("Error while encrypting the password. Please try again.", "error")
                 return render_template('register.html')
 
+            # Insert the new user into the database
             cursor.execute(
                 "INSERT INTO users (name, email, password, role, created_at) VALUES (%s, %s, %s, %s, NOW())",
                 (name, email, hashed_password, 'user')
             )
             conn.commit()
 
+            # Retrieve the new user's details
             cursor.execute("SELECT id, name, role FROM users WHERE email = %s", (email,))
             new_user = cursor.fetchone()
 
@@ -52,6 +67,7 @@ def register():
                 flash("Registration failed, please try again.", "error")
                 return render_template('register.html')
 
+            # Create a session for the new user
             session.clear()
             session['user_id'] = new_user['id']
             session['user_name'] = new_user['name']
@@ -71,6 +87,7 @@ def register():
                 conn.close()
 
     return render_template('register.html')
+
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])

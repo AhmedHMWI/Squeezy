@@ -13,20 +13,6 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-# def get_all_fruits():
-#     """ Fetch all available fruits from the database """
-#     try:
-#         conn = get_db_connection()
-#         cursor = conn.cursor(dictionary=True)
-#         cursor.execute("SELECT * FROM fruits")
-#         fruits = cursor.fetchall()
-#         return fruits
-#     except Exception as e:
-#         print(f"Database Error: {e}")
-#         return []
-#     finally:
-#         conn.close()
-
 @user_bp.route('/dashboard')
 def user_dashboard():
     if 'user_id' not in session:
@@ -77,11 +63,18 @@ def create_juice():
     fruit_ids = request.form.getlist('selected_fruits[]')
     image_url = None 
 
+    # Check if the image file already exists in the upload directory
     if 'image' in request.files:
         file = request.files['image']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             filepath = os.path.join(UPLOAD_FOLDER, filename)
+
+            # Check if the image already exists in the directory
+            if os.path.exists(filepath):
+                flash("❌ This image has already been uploaded. Please choose a different image.", "error")
+                return redirect(url_for('user.user_dashboard'))
+
             file.save(filepath)
             image_url = f"uploads/{filename}"
 
@@ -124,11 +117,9 @@ def create_juice():
         cursor.execute("UPDATE juices SET price = %s WHERE id = %s", (total_price, juice_id))
         conn.commit()
 
-        print(f"✅ Juice Created: {juice_name}, Total Price: {total_price}")  # Debugging
         flash("✅ Your juice has been created successfully!", "success")
 
     except Exception as e:
-        print(f"❌ Error creating juice: {str(e)}")  # Debugging error
         flash(f"❌ Error creating juice: {str(e)}", "error")
 
     finally:
@@ -273,28 +264,3 @@ def get_user_juices(user_id):
     finally:
         conn.close()
 
-
-# def get_all_juices():
-#     """ Fetch all juices created by all users """
-#     try:
-#         conn = get_db_connection()
-#         cursor = conn.cursor(dictionary=True)
-
-#         query = """
-#         SELECT juices.id, juices.name, juices.price, juices.image_url,
-#             IFNULL(GROUP_CONCAT(DISTINCT fruits.name ORDER BY fruits.name SEPARATOR ', '), 'No fruits selected') AS fruit_names
-#         FROM juices
-#         LEFT JOIN juice_fruits ON juices.id = juice_fruits.juice_id
-#         LEFT JOIN fruits ON juice_fruits.fruit_id = fruits.id
-#         GROUP BY juices.id, juices.name, juices.price, juices.image_url, juices.created_at
-#         ORDER BY juices.created_at DESC
-#         """
-
-#         cursor.execute(query)
-#         juices = cursor.fetchall()
-#         return juices
-#     except Exception as e:
-#         print(f"Database Error: {e}")
-#         return []
-#     finally:
-#         conn.close()
