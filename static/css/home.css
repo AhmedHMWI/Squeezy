@@ -1,0 +1,171 @@
+/* General Styling */
+body {
+    background-color: var(--background-dark);
+    font-family: 'Arial', sans-serif;
+}
+
+/* Create Your Juice CTA Section */
+.cta-section {
+    background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
+    color: var(--text-light);
+    padding: 80px 20px;
+    text-align: center;
+    /* border-radius: var(--border-radius); */
+    box-shadow: var(--box-shadow);
+    animation: fadeIn 2s ease-out;
+}
+
+.cta-container {
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeInUp 1s forwards;
+}
+
+.cta-title {
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    animation: slideUp 0.7s ease-out;
+}
+
+.cta-text {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    animation: fadeInUp 1.2s ease-out;
+}
+
+.cta-button {
+    padding: 12px 40px;
+    font-size: 1.2rem;
+    background-color: var(--secondary-color);
+    color: var(--text-light);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.cta-button:hover {
+    background-color: var(--secondary-light);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Juice Container Styling */
+.juice-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 40px 20px;
+}
+
+/* Juice Card Styling */
+.juice-card {
+    position: relative;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.juice-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Juice Image Styling */
+.juice-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.juice-card:hover .juice-image {
+    transform: scale(1.1);
+}
+
+/* Juice Overlay Styling */
+.juice-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--overlay-bg);
+    opacity: 0;
+    color: var(--text-light);
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.juice-card:hover .juice-overlay {
+    opacity: 1;
+}
+
+.juice-overlay h3 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.juice-overlay p {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.juice-price {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: var(--text-light);
+}
+
+
+/* Hover effect to highlight */
+.juice-price:hover {
+    color: var(--secondary-color);
+}
+
+/* Animation for smooth transitions */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

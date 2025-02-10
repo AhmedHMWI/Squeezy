@@ -1,0 +1,113 @@
+:root {
+    /* Primary Colors */
+    --primary-color: #FF9F00; /* Fresh orange for the juice theme */
+    --primary-light: #FFB84D; /* Lighter shade of orange */
+    --primary-dark: #FF6600; /* Darker orange for accents */
+
+    /* Secondary Colors */
+    --secondary-color: #FF5E62; /* A vibrant pinkish red (perfect for fruit juices like strawberry) */
+    --secondary-light: #FF7D7F; /* Lighter version of secondary color */
+    --secondary-black: rgb(0, 0, 1);
+
+    /* Background and Card */
+    --background-color: #F8F8F8; /* Light off-white background for freshness */
+    --background-dark: #D8E8F1; /* Slightly darker light blue for contrast */
+    --card-bg: #FFFFFF; /* White card background to keep content clean and clear */
+    
+    /* Text Colors */
+    --text-light: #FFFFFF; /* White text for better contrast */
+    --text-color: #333333; /* Dark gray text for readability */
+    
+    /* Link Colors */
+    --link-color: var(--primary-color);
+    --link-hover-color: var(--primary-light);
+    --button-active: #76031A;
+    
+    /* Borders and Shadows */
+    --border-color: #E4E4E4; /* Soft gray border */
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for cards */
+    
+    /* Buttons */
+    --button-hover: #FF3E50; /* Hover color for buttons */
+    --accent-color: #FF5E62; /* Bright accent color for hover and active states */
+    --overlay-bg: rgba(0, 0, 0, 0.4); /* Slightly dark overlay to make text more readable */
+
+    /* Border Radius */
+    --border-radius: 10px; /* Rounded corners for a soft, friendly feel */
+}
+
+
+
+body {
+    background-color: var(--background-dark);
+    font-family: "Raleway", sans-serif;
+    padding-top: 70px;
+    background-size: cover;
+    background-position: center center; 
+    background-repeat: no-repeat;  
+    background-attachment: fixed;
+}
+
+h2 {
+    color: var(--accent-color);
+    margin-bottom: 20px;
+}
+
+
+/* Flash message styling */
+/* .flash-message {
+    transition: opacity 1s ease, visibility 1s ease;
+} */
+
+/* Hide flash messages after fading out */
+/* .flash-message.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+ */
+
+
+
+/* Flash message container */
+.flash-message-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 500px;
+    z-index: 9999;
+    display: none; /* Initially hidden */
+}
+
+/* Flash message styling */
+.flash-message {
+    background-color: #44c767;  /* Green color for success */
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeInOut 5s ease-in-out; /* Animation */
+}
+
+.flash-message p {
+    margin: 0;
+}
+
+/* Keyframes for fading in and out */
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}

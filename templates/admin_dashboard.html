@@ -1,0 +1,109 @@
+    {% extends 'base.html' %}
+
+    {% block title %}Admin Dashboard{% endblock %}
+
+    {% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
+
+    {% block body %}
+
+
+    <div class="container mt-5">
+        <h2 class="text-center">Fruits Dashboard</h2>
+
+        <!-- {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} text-center flash-message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %} -->
+        <div id="flash-message-container" class="flash-message-container">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-message">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+
+
+        <div class="card shadow-lg p-4 mt-4">
+            <h4>Add New Fruit</h4>
+            <form method="POST" action="{{ url_for('admin.add_fruit') }}" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Fruit Name</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price ($)</label>
+                    <input type="number" step="0.01" id="price" name="price" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Upload Image</label>
+                    <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                </div>
+                <button type="submit" class="btn btn-success w-100">Add Fruit</button>
+            </form>
+        </div>
+
+        <div class="card shadow-lg p-4 mt-4">
+            <h4>Available Fruits</h4>
+
+            {% if fruits %}
+                <table class="table table-striped mt-3">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Price ($)</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for fruit in fruits %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>
+                                {% if fruit.image_url %}
+                                    <img src="{{ url_for('static', filename=fruit.image_url) }}" 
+                                        alt="{{ fruit.name }}" 
+                                        class="img-thumbnail" width="80">
+                                {% else %}
+                                    <span>No Image</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ fruit.name }}</td>
+                            <td>${{ "%.2f"|format(fruit.price) }}</td>
+                            <td>{{ fruit.quantity }}</td>
+                            <td>
+                                <a href="{{ url_for('admin.edit_fruit', fruit_id=fruit.id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <form method="POST" action="{{ url_for('admin.delete_fruit', fruit_id=fruit.id) }}" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="alert alert-warning text-center mt-3">
+                    <h5>No fruits available.</h5>
+                    <p>Start adding fruits now!</p>
+                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFruitModal">Add First Fruit</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% endblock %}

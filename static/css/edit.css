@@ -1,0 +1,72 @@
+/* .container {
+    max-width: 600px;
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin: auto;
+} */
+
+.form-container {
+    padding: 20px;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.form-label {
+    font-weight: bold;
+    color: var(--primary-dark);
+}
+
+.form-control {
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    padding: 10px;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px var(--primary-light);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: var(--button-hover);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    border: none;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    color: var(--text-light);
+    transition: background 0.3s;
+    display: block;
+    text-align: center;
+}
+
+.btn-secondary:hover {
+    background-color: var(--secondary-light);
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+#preview {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Juice Store - Home{% endblock %}
+
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">{% endblock %}
+
+{% block body %}
+
+<!-- Juice Container -->
+<div class="juice-container container">
+    {% for juice in juices %}
+    <div class="juice-card">
+        {% if juice.image_url %}
+        <img src="{{ url_for('static', filename=juice.image_url) }}" alt="{{ juice.name }}" class="juice-image">
+        {% else %}
+        <img src="{{ url_for('static', filename='images/default.png') }}" alt="{{ juice.name }}" class="juice-image">
+        {% endif %}
+        <div class="juice-overlay">
+            <h3>{{ juice.name }}</h3>
+            <p>{{ juice.fruit_names }}</p>
+            <span class="juice-price">${{ juice.price }}</span>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Create Your Juice CTA Section -->
+<div class="cta-section">
+    <div class="cta-container">
+        <h1 class="cta-title">Can't find your favorite juice?</h1>
+        <p class="cta-text">Have a blast mixing fruits and creating your very own juice blends. Log in to get started!</p>
+        <a href="{{ url_for('auth.login') }}" class="cta-button">Get Started Now!</a>
+    </div>
+</div>
+
+{% endblock %}

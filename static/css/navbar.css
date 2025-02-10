@@ -1,0 +1,120 @@
+/* Navbar Styling */
+.navbar {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); /* Gradient Background */
+    color: var(--text-light);
+    box-shadow: var(--box-shadow);
+    transition: 0.5s ease;
+}
+
+/* Navbar Logo Container */
+.navbar-logo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+/* Logo Image */
+.navbar-logo-img {
+    height: 60px;
+    width: auto;
+    border-radius: 50%;
+}
+
+/* Logo Text */
+.navbar-logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text-light);
+    text-transform: uppercase;
+    transition: transform 0.3s ease;
+}
+
+/* Navbar Links */
+.navbar-nav .nav-item .btn {
+    background-color: var(--card-bg);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    color: var(--text-color);
+    font-size: 1.1rem;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    box-shadow: var(--box-shadow);
+}
+
+.linksContainer {
+    padding-left: 3rem;
+}
+
+.linksContainer a {
+    color: var(--text-light);
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 10px 20px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    display: inline-block;
+}
+
+/* Hover effect for links */
+.linksContainer a:hover {
+    transform: scale(1.05);
+}
+
+/* Active link styling */
+.linksContainer a.active {
+    color: var(--button-active);
+    font-weight: 800;
+    transform: scale(1.05);
+}
+
+/* Hover effect for links */
+.navbar-nav .nav-item .btn:hover {
+    background-color: var(--primary-light);
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Active link styling */
+.navbar-nav .nav-item .btn.active {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+}
+
+
+/* Navbar Right Side - Welcome Text and Logout Button */
+.navbar-nav.ms-auto {
+    font-size: 1.1rem;
+}
+
+.navbar-nav.ms-auto .nav-item .navbar-text {
+    color: var(--text-light);
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+/* Button Styling for Logout */
+.navbar-nav.ms-auto .nav-item .btn-danger {
+    background-color: var(--accent-color);
+    color: var(--text-light);
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect for logout button */
+.navbar-nav.ms-auto .nav-item .btn-danger:hover {
+    background-color: #e63d40;
+}
+
+/* Navbar on Mobile Devices */
+@media (max-width: 768px) {
+    .navbar-nav {
+        text-align: center;
+    }
+
+    .navbar-nav .nav-item .btn {
+        margin: 10px 0;
+    }
+}
