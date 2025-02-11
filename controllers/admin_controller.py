@@ -125,9 +125,9 @@ def delete_fruit(fruit_id):
     try:
         cursor.execute("DELETE FROM fruits WHERE id = %s", (fruit_id,))
         conn.commit()
-        flash("✅ Fruit deleted successfully!", "danger")
+        flash("Fruit deleted successfully!", "danger")
     except Exception as e:
-        flash(f"❌ Error deleting fruit: {str(e)}", "error")
+        flash(f"Error deleting fruit: {str(e)}", "error")
     finally:
         cursor.close()
         conn.close()

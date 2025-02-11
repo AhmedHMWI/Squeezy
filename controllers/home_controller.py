@@ -1,13 +1,10 @@
 from flask import Blueprint, render_template, session
-
 from database import get_db_connection
 
 home_bp = Blueprint('home', __name__, url_prefix='/', template_folder='../templates')
 
-
 @home_bp.route('/')
 def home():
-    """ Fetch all juices and render home page """
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
@@ -32,4 +29,3 @@ def home():
             conn.close()
 
     return render_template('home.html', juices=juices, user=session.get('user_name', 'Guest'))
-

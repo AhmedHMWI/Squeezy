@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Juice Store{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/logoJuice.jpg') }}" type="image/png">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -11,14 +12,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     {% block extra_css %}{% endblock %}
-
 </head>
 <body>
     {% include 'navbar.html' %}
     {% block navbar %}{% endblock %}
 
     {% block body %}{% endblock %}
-
 
     {% block extra_js %}{% endblock %}
     <script src="{{ url_for('static', filename='js/validation.js') }}"></script>

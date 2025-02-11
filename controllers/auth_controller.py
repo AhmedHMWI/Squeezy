@@ -108,7 +108,7 @@ def login():
             session['role'] = user['role']
             session.permanent = True
 
-            flash("✅ Login successful!", "success")
+            flash("Login successful!", "success")
 
             if user['role'] == 'admin':
                 return redirect(url_for('admin.admin_dashboard'))

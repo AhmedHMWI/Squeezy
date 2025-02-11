@@ -35,7 +35,10 @@ a {
     font-weight: 600;
 }
 
-/* Flexbox layout to center the form and animation */
+.error-message {
+    color: var(--secondary-color);
+}
+
 .row.justify-content-center {
     display: flex;
     align-items: center;
@@ -43,19 +46,11 @@ a {
     min-height: 100vh;
 }
 
-.col-md-6, .col-lg-5 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Adjust Lottie animation */
 dotlottie-player {
     width: 100%;
     height: auto;
 }
 
-/* Add responsive styles */
 @media (max-width: 767px) {
     .col-md-6, .col-lg-5 {
         width: 100%;

@@ -1,6 +1,6 @@
 /* Navbar Styling */
 .navbar {
-    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); /* Gradient Background */
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
     color: var(--text-light);
     box-shadow: var(--box-shadow);
     transition: 0.5s ease;
@@ -70,19 +70,18 @@
     transform: scale(1.05);
 }
 
-/* Hover effect for links */
+/* Hover effect for navbar buttons */
 .navbar-nav .nav-item .btn:hover {
     background-color: var(--primary-light);
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Active link styling */
+/* Active navbar button styling */
 .navbar-nav .nav-item .btn.active {
     background-color: var(--primary-dark);
     color: var(--text-light);
 }
-
 
 /* Navbar Right Side - Welcome Text and Logout Button */
 .navbar-nav.ms-auto {
@@ -95,7 +94,6 @@
     font-weight: 500;
 }
 
-/* Button Styling for Logout */
 .navbar-nav.ms-auto .nav-item .btn-danger {
     background-color: var(--accent-color);
     color: var(--text-light);
@@ -103,7 +101,6 @@
     transition: background-color 0.3s ease;
 }
 
-/* Hover effect for logout button */
 .navbar-nav.ms-auto .nav-item .btn-danger:hover {
     background-color: #e63d40;
 }
@@ -124,8 +121,18 @@
     }
 }
 
+/* Navbar for Medium Screens */
+@media (max-width: 992px) {
+    .linksContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+}
 
-
+/* Theme Toggle Button */
 .btn-toggle-theme {
     background: none;
     border: none;

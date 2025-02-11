@@ -1,24 +1,24 @@
 :root {
     /* Primary Colors */
-    --primary-color: #FF9F00; /* Fresh orange for the juice theme */
-    --primary-light: #FFB84D; /* Lighter shade of orange */
-    --primary-dark: #FF6600; /* Darker orange for accents */
+    --primary-color: #FF9F00; 
+    --primary-light: #FFB84D;
+    --primary-dark: #FF6600;
 
     /* Secondary Colors */
-    --secondary-color: #FF5E62; /* A vibrant pinkish red (perfect for fruit juices like strawberry) */
-    --secondary-light: #FF7D7F; /* Lighter version of secondary color */
+    --secondary-color: #FF5E62;
+    --secondary-light: #FF7D7F;
     --secondary-black: rgb(0, 0, 1);
 
     /* Background and Card */
-    --background-color: #F8F8F8; /* Light off-white background for freshness */
-    --background-dark: #121212; /* Dark background for dark mode */
-    --background-dark-card: #1F1F1F; /* Dark card background */
-    --card-bg: #FFFFFF; /* White card background to keep content clean and clear */
+    --background-color: #F8F8F8;
+    --background-dark: #121212;
+    --background-dark-card: #1F1F1F;
+    --card-bg: #FFFFFF;
     
     /* Text Colors */
-    --text-light: #FFFFFF; /* White text for better contrast */
-    --text-color: #333333; /* Dark gray text for readability */
-    --text-dark: #CCCCCC; /* Light text for dark mode */
+    --text-light: #FFFFFF;
+    --text-color: #333333;
+    --text-dark: #CCCCCC;
     
     /* Link Colors */
     --link-color: var(--primary-color);
@@ -26,35 +26,32 @@
     --button-active: #76031A;
     
     /* Borders and Shadows */
-    --border-color: #E4E4E4; /* Soft gray border */
-    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for cards */
+    --border-color: #E4E4E4;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     
     /* Buttons */
-    --button-hover: #FF3E50; /* Hover color for buttons */
-    --accent-color: #FF5E62; /* Bright accent color for hover and active states */
-    --overlay-bg: rgba(0, 0, 0, 0.4); /* Slightly dark overlay to make text more readable */
+    --button-hover: #FF3E50;
+    --accent-color: #FF5E62;
+    --overlay-bg: rgba(0, 0, 0, 0.4);
 
     /* Border Radius */
-    --border-radius: 10px; /* Rounded corners for a soft, friendly feel */
+    --border-radius: 10px;
 }
 
 /* Dark Mode Overrides */
 [data-theme='dark'] {
-    --background-color: #000000; /* Full black background for dark mode */
-    --background-dark-card: #1F1F1F; /* Darker card background */
-    --card-bg: #2e2e2e; /* Dark background for cards */
-    --text-light: #ffffff; /* Light gray text */
-    --text-color: #ffffff; /* Light gray text for dark mode */
-    --primary-color: #FF6600; /* A brighter orange for dark mode */
-    --secondary-color: #FF5E62; /* Keep the vibrant pink for accent */
-    --link-color: var(--primary-color); /* Maintain primary color for links */
-    --link-hover-color: var(--primary-light); /* Hover color for links */
-    --button-hover: #FF3E50; /* Hover color for buttons */
-    --accent-color: #FF5E62; /* Bright accent color */
+    --background-color: #000000;
+    --background-dark-card: #1F1F1F;
+    --card-bg: #2e2e2e;
+    --text-light: #ffffff;
+    --text-color: #ffffff;
+    --primary-color: #FF6600;
+    --secondary-color: #FF5E62;
+    --link-color: var(--primary-color);
+    --link-hover-color: var(--primary-light);
+    --button-hover: #FF3E50;
+    --accent-color: #FF5E62;
 }
-
-
-
 
 body {
     background-color: var(--background-color);
@@ -82,11 +79,17 @@ label {
     transition: opacity 1s ease, visibility 1s ease;
     padding: 15px;
     border-radius: 5px;
-    color:  var(--accent-color);
+    color: var(--button-active);
     margin-bottom: 20px;
     font-size: 16px;
-    visibility: visible; /* Ensure the message is visible initially */
-    opacity: 1; /* Full opacity initially */
+    font-weight: 500;
+    visibility: visible;
+    opacity: 1;
+}
+
+.flash-message.fade-out {
+    visibility: hidden;
+    opacity: 0;
 }
 
 .flash-message.hidden {
@@ -94,22 +97,19 @@ label {
     opacity: 0;
 }
 
-/* Success Message (Green) */
+/* Success, Error, Info Message Styles */
 .flash-message-success {
-    background-color: #54ce58; /* Green for success */
+    background-color: #54ce58;
 }
 
-/* Error Message (Red) */
 .flash-message-error {
-    background-color: #f44336; /* Red for error */
+    background-color: #f44336;
 }
 
-/* Info Message (Blue) */
 .flash-message-info {
-    background-color: #209bff; /* Blue for info */
+    background-color: #209bff;
 }
 
-/* Add hover effects for better user experience */
 .flash-message:hover {
     opacity: 0.9;
 }
@@ -123,14 +123,12 @@ label {
     width: 90%;
     max-width: 500px;
     z-index: 9999;
-    display: none; /* Initially hidden */
+    display: none;
 }
-
 
 .flash-message p {
     margin: 0;
 }
-
 
 .alert {
     font-size: 1rem;

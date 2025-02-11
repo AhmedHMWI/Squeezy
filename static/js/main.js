@@ -2,9 +2,8 @@ function setDeleteFormAction(actionUrl) {
     document.getElementById("deleteForm").action = actionUrl;
 }
 
-
 document.addEventListener('DOMContentLoaded', function() {
-    // Ensure the element exists before adding an event listener
+    // Handle image preview change
     const imageInput = document.getElementById('imageInput');
     if (imageInput) {
         imageInput.addEventListener("change", function(event) {
@@ -19,24 +18,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Handle the flash message fade-out
-    const flashMessages = document.querySelectorAll('.flash-message');
-
-    flashMessages.forEach(function(message) {
-        setTimeout(function() {
-            message.classList.add('fade-out');
-        }, 1500);
-    });
-});
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    // Flash message fade-out behavior
+    // Handle flash message fade-out after 2 seconds
     const flashMessages = document.querySelectorAll('.flash-message');
     flashMessages.forEach(function(message) {
         setTimeout(function() {
             message.classList.add('fade-out');
-        }, 1500);
+        }, 2000);
     });
 
     // Toggle password visibility
@@ -54,89 +41,35 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-});
 
+    // Modal for delete juice
+    const deleteJuiceButtons = document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#deleteJuiceModal"]');
+    const deleteJuiceForm = document.getElementById('deleteForm');
 
-
-
-
-document.addEventListener("DOMContentLoaded", function() {
-    // Find all flash messages
-    const flashMessages = document.querySelectorAll('.flash-message');
-
-    flashMessages.forEach(function(message) {
-        // Set a timeout to hide the message after 1 second
-        setTimeout(function() {
-            message.classList.add('hidden'); // Apply the 'hidden' class to hide it
-        }, 1000); // 1000 ms = 1 second
-    });
-});
-
-
-
-
-
-
-
-
-
-
-
-
-// Modal for delete juice
-document.addEventListener('DOMContentLoaded', function() {
-    const deleteButtons = document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#deleteConfirmModal"]');
-    const deleteForm = document.getElementById('deleteForm');
-
-    deleteButtons.forEach(button => {
+    deleteJuiceButtons.forEach(button => {
         button.addEventListener('click', function() {
             const juiceId = this.getAttribute('data-id');
-            // Set the form action dynamically based on the juice ID
-            deleteForm.action = '/user/juice/delete/' + juiceId;
+            deleteJuiceForm.action = '/user/juice/delete/' + juiceId;
         });
     });
-});
 
-
-
-// Modal for delete fruit
-document.addEventListener('DOMContentLoaded', function() {
-    const deleteButtons = document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#deleteConfirmModal"]');
-    const deleteForm = document.getElementById('deleteForm');
-
-    deleteButtons.forEach(button => {
+    // Modal for delete fruit
+    const deleteFruitButtons = document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#deleteFruitModal"]');
+    deleteFruitButtons.forEach(button => {
         button.addEventListener('click', function() {
             const fruitId = this.getAttribute('data-id');
-            // Set the form action dynamically based on the fruit ID
-            deleteForm.action = '/admin/fruit/delete/' + fruitId;
+            deleteJuiceForm.action = '/admin/fruit/delete/' + fruitId;
         });
     });
 });
 
-
-
-
-
-
-
-// Check if dark mode is already stored in localStorage
+// Dark mode toggle functionality
 const currentTheme = localStorage.getItem('theme');
+document.documentElement.setAttribute('data-theme', currentTheme || 'light');
 
-if (currentTheme === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-} else {
-    document.documentElement.setAttribute('data-theme', 'light');
-}
-
-// Toggle Dark Mode
 function toggleTheme() {
     let theme = document.documentElement.getAttribute('data-theme');
-
-    if (theme === 'light') {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-    } else {
-        document.documentElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
-    }
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
 }

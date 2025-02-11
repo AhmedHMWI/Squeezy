@@ -3,7 +3,6 @@ import mysql.connector
 import bcrypt
 from dotenv import load_dotenv
 
-# ✅ Load environment variables from .env
 load_dotenv()
 
 def get_db_connection():
@@ -19,7 +18,6 @@ def get_db_connection():
         return None
 
 def create_tables():
-    """ ✅ Create necessary tables in the database """
     conn = get_db_connection()
     if not conn:
         return
@@ -82,7 +80,6 @@ def create_tables():
 
 
 def seed_data():
-    """ ✅ Insert initial test data into the database """
     conn = get_db_connection()
     if not conn:
         print("❌ Unable to connect to database. Seeding data failed.")
@@ -91,7 +88,6 @@ def seed_data():
     cursor = conn.cursor()
 
     try:
-        # ✅ Delete existing data (to prevent foreign key issues)
         cursor.execute("DELETE FROM juice_fruits")
         cursor.execute("DELETE FROM order_items")
         cursor.execute("DELETE FROM orders")
@@ -100,11 +96,9 @@ def seed_data():
         cursor.execute("DELETE FROM users")
         conn.commit()
 
-        # ✅ Hash passwords securely
         def hash_password(password):
             return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-        # ✅ Insert users
         users = [
             ("Ahmed", "ahmed@example.com", hash_password("admin123"), "admin"),
             ("Amr", "amr@example.com", hash_password("amr123"), "user"),
@@ -113,7 +107,6 @@ def seed_data():
         cursor.executemany("INSERT INTO users (name, email, password, role) VALUES (%s, %s, %s, %s)", users)
         conn.commit()
 
-        # ✅ Get user IDs
         cursor.execute("SELECT id, email FROM users")
         user_data = {email: user_id for user_id, email in cursor.fetchall()}
 
@@ -125,9 +118,7 @@ def seed_data():
             print("❌ Error: User insertion failed!")
             return
 
-        print(f"✅ Users inserted successfully! (Admin: {admin_id}, User1: {user1_id}, User2: {user2_id})")
 
-        # ✅ Insert fruits
         fruits = [
             (admin_id, "Apple", 1.5, 50),
             (admin_id, "Banana", 0.8, 100),
@@ -137,9 +128,7 @@ def seed_data():
         cursor.executemany("INSERT INTO fruits (user_id, name, price, quantity) VALUES (%s, %s, %s, %s)", fruits)
         conn.commit()
 
-        print("✅ Fruits inserted successfully!")
 
-        # ✅ Insert juices
         juices = [
             (admin_id, "Mango Juice", 5.0),
             (user1_id, "Strawberry Banana Mix", 6.0)
@@ -147,7 +136,6 @@ def seed_data():
         cursor.executemany("INSERT INTO juices (user_id, name, price) VALUES (%s, %s, %s)", juices)
         conn.commit()
 
-        print("✅ Juices inserted successfully!")
 
         # Get all juice and fruit IDs for creating juice_fruits
         cursor.execute("SELECT id FROM juices WHERE user_id IN (%s, %s, %s)", (admin_id, user1_id, user2_id))
@@ -156,7 +144,6 @@ def seed_data():
         cursor.execute("SELECT id FROM fruits WHERE user_id IN (%s, %s, %s)", (admin_id, user1_id, user2_id))
         fruit_ids = [fruit[0] for fruit in cursor.fetchall()]  # Use index 0 since fetchall returns tuples
 
-        # ✅ Insert juice_fruits (using valid juice_id and fruit_id)
         juice_fruits = []
         for juice_id in juice_ids:
             for fruit_id in fruit_ids:

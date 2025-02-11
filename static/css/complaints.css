@@ -34,7 +34,6 @@ a {
     color: var(--secondary-color);
 }
 
-/* Flexbox layout to center the form and animation */
 .row.justify-content-center {
     display: flex;
     align-items: center;
@@ -48,13 +47,11 @@ a {
     align-items: center;
 }
 
-/* Adjust Lottie animation */
 dotlottie-player {
     width: 100%;
     height: auto;
 }
 
-/* Add responsive styles */
 @media (max-width: 767px) {
     .col-md-6, .col-lg-5 {
         width: 100%;

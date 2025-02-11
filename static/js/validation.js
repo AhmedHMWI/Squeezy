@@ -83,7 +83,6 @@ function validateRegisterForm() {
       confirmPasswordError.innerHTML = "Passwords do not match.";
       count++;
     }
-    // return count < 0
     if (count > 0) {
       return false;
     }

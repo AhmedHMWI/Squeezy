@@ -95,10 +95,10 @@
                     <td>{{ juice.fruit_names }}</td>
                     <td>
                         <a href="{{ url_for('user.edit_juice', juice_id=juice.id) }}" class="btn btn-warning btn-sm">Edit</a>
-                        <!-- Trigger for Modal -->
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal" data-id="{{ juice.id }}">
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteJuiceModal" data-id="{{ juice.id }}">
                             Delete
                         </button>
+                        
                     </td>
                     
                 </tr>

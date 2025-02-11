@@ -10,13 +10,13 @@
         <h2 class="text-center">Fruits Dashboard</h2>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="alert-container">
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} text-center flash-message">{{ message }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
+            {% if messages %}
+                <div class="alert-container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} text-center flash-message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         {% endwith %}
 
 
@@ -76,8 +76,7 @@
                             <td>{{ fruit.quantity }}</td>
                             <td>
                                 <a href="{{ url_for('admin.edit_fruit', fruit_id=fruit.id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                <!-- Trigger for Modal -->
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal" data-id="{{ fruit.id }}">
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteFruitModal" data-id="{{ fruit.id }}">
                                     Delete
                                 </button>
                             </td>

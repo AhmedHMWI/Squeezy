@@ -14,17 +14,14 @@ class Complaint:
             "message": self.message
         }
 
-        # Read the existing complaints from the file
         try:
             with open("complaints.json", "r") as file:
                 data = json.load(file)
         except (FileNotFoundError, json.JSONDecodeError):
             data = []
 
-        # Append the new complaint
         data.append(complaint_data)
 
-        # Write the updated list of complaints back to the file
         with open("complaints.json", "w") as file:
             json.dump(data, file, indent=4)
 

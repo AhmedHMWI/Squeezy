@@ -8,9 +8,7 @@
         <!-- Logo and Text -->
         <a class="navbar-logo" href="{{ url_for('home.home') }}">
             <div class="logo-container">
-                <!-- Logo Image -->
                 <img src="{{ url_for('static', filename='images/logoJuice.jpg') }}" alt="Squeezy Logo" class="navbar-logo-img">
-                <!-- Logo Text -->
                 <span class="navbar-logo-text">SQUEEZY</span>
             </div>
         </a>
@@ -72,7 +70,7 @@
                     </li>
                 </ul>
             {% else %}
-                <!-- Links for Guests (Not Logged In) -->
+                <!-- Links for Guests -->
                 <ul class="navbar-nav me-auto d-flex">
                     <li class="nav-item">
                         <a href="{{ url_for('home.home') }}" class="me-3 {% if request.endpoint == 'home.home' %}active{% endif %}">Home</a>
