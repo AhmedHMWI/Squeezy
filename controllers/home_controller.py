@@ -21,7 +21,6 @@ def home():
         juices = cursor.fetchall()
     except Exception as e:
         juices = []
-        print(f"Error fetching juices: {e}")
     finally:
         if cursor:
             cursor.close()

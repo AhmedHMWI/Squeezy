@@ -30,8 +30,8 @@ Ensure you have the following installed on your system:
 ### Installation
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/juice-store.git
-    cd juice-store
+    git clone https://github.com/AhmedHMWI/Squeezy.git
+    cd squeezy
     ```
 
 2. Create and activate a virtual environment (optional but recommended):
@@ -69,7 +69,8 @@ Ensure you have the following installed on your system:
 
 ### File Structure
 - `app.py`: The main entry point for the Flask application.
-- `models/`: Contains the model files (e.g., `complaints.py`, `juices.py`).
+- `models/`: Contains the model files (e.g., `complaints.py`).
+- `controllers/`: Contains the model files (e.g., `admin_controller.py`, `user_controller.py`, `auth_controller.py`).
 - `templates/`: Contains HTML files for rendering views.
 - `static/`: Contains static assets (CSS, images, JavaScript).
 - `.env`: Environment variables for database configuration.

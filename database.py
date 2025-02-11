@@ -38,10 +38,10 @@ def create_tables():
         CREATE TABLE IF NOT EXISTS fruits (
             id INT AUTO_INCREMENT PRIMARY KEY,
             user_id INT,
-            name VARCHAR(100) NOT NULL UNIQUE,  -- Ensure fruit name is unique
+            name VARCHAR(100) NOT NULL UNIQUE,
             price DECIMAL(10,2) NOT NULL,
             quantity INT NOT NULL,
-            image_url VARCHAR(255) UNIQUE,  -- Ensure image_url is unique for fruits
+            image_url VARCHAR(255) UNIQUE,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         )
@@ -50,9 +50,9 @@ def create_tables():
         CREATE TABLE IF NOT EXISTS juices (
             id INT AUTO_INCREMENT PRIMARY KEY,
             user_id INT,
-            name VARCHAR(100) NOT NULL UNIQUE,  -- Ensure juice name is unique
+            name VARCHAR(100) NOT NULL UNIQUE,
             price DECIMAL(10,2) NOT NULL,
-            image_url VARCHAR(255) UNIQUE,  -- Ensure image_url is unique for juices
+            image_url VARCHAR(255) UNIQUE,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         )
@@ -77,12 +77,9 @@ def create_tables():
         cursor.close()
         conn.close()
 
-
-
 def seed_data():
     conn = get_db_connection()
     if not conn:
-        print("❌ Unable to connect to database. Seeding data failed.")
         return
     
     cursor = conn.cursor()
@@ -115,9 +112,7 @@ def seed_data():
         user2_id = user_data.get("hashem@example.com")
 
         if not all([admin_id, user1_id, user2_id]):
-            print("❌ Error: User insertion failed!")
             return
-
 
         fruits = [
             (admin_id, "Apple", 1.5, 50),
@@ -128,7 +123,6 @@ def seed_data():
         cursor.executemany("INSERT INTO fruits (user_id, name, price, quantity) VALUES (%s, %s, %s, %s)", fruits)
         conn.commit()
 
-
         juices = [
             (admin_id, "Mango Juice", 5.0),
             (user1_id, "Strawberry Banana Mix", 6.0)
@@ -136,13 +130,11 @@ def seed_data():
         cursor.executemany("INSERT INTO juices (user_id, name, price) VALUES (%s, %s, %s)", juices)
         conn.commit()
 
-
-        # Get all juice and fruit IDs for creating juice_fruits
         cursor.execute("SELECT id FROM juices WHERE user_id IN (%s, %s, %s)", (admin_id, user1_id, user2_id))
-        juice_ids = [juice[0] for juice in cursor.fetchall()]  # Use index 0 since fetchall returns tuples
+        juice_ids = [juice[0] for juice in cursor.fetchall()]
 
         cursor.execute("SELECT id FROM fruits WHERE user_id IN (%s, %s, %s)", (admin_id, user1_id, user2_id))
-        fruit_ids = [fruit[0] for fruit in cursor.fetchall()]  # Use index 0 since fetchall returns tuples
+        fruit_ids = [fruit[0] for fruit in cursor.fetchall()]
 
         juice_fruits = []
         for juice_id in juice_ids:
@@ -152,17 +144,12 @@ def seed_data():
         cursor.executemany("INSERT INTO juice_fruits (juice_id, fruit_id, quantity) VALUES (%s, %s, %s)", juice_fruits)
         conn.commit()
 
-        print("Juice fruits inserted successfully!")
-
     except mysql.connector.Error as e:
-        print(f"Database Error while seeding: {e}")
+        pass
     finally:
         cursor.close()
         conn.close()
 
-
-
-
 if __name__ == "__main__":
     create_tables() 
-    seed_data() 
+    seed_data()
