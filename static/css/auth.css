@@ -6,6 +6,7 @@
     box-shadow: 0 4px 10px var(--shadow-color);
     padding: 20px;
     color: var(--text-light);
+    margin-top: 50px;
 }
 
 .input-group-text {
@@ -30,26 +31,34 @@
 
 a {
     text-decoration: none;
-    color: var(--secondary-color);
+    color: var(--text-color);
+    font-weight: 600;
 }
 
-
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+/* Flexbox layout to center the form and animation */
+.row.justify-content-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
 }
 
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
+.col-md-6, .col-lg-5 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+/* Adjust Lottie animation */
+dotlottie-player {
+    width: 100%;
+    height: auto;
+}
+
+/* Add responsive styles */
+@media (max-width: 767px) {
+    .col-md-6, .col-lg-5 {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}

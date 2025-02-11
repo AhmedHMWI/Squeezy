@@ -10,25 +10,14 @@
         <h2 class="text-center">Fruits Dashboard</h2>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="alert-container">
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }} text-center flash-message">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
+        {% if messages %}
+            <div class="alert-container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} text-center flash-message">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
         {% endwith %}
-        <div id="flash-message-container" class="flash-message-container">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="flash-message">
-                        {% for message in messages %}
-                            <p>{{ message }}</p>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-        </div>
 
 
         <div class="card shadow-lg p-4 mt-4">

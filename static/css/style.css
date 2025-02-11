@@ -11,12 +11,14 @@
 
     /* Background and Card */
     --background-color: #F8F8F8; /* Light off-white background for freshness */
-    --background-dark: #D8E8F1; /* Slightly darker light blue for contrast */
+    --background-dark: #121212; /* Dark background for dark mode */
+    --background-dark-card: #1F1F1F; /* Dark card background */
     --card-bg: #FFFFFF; /* White card background to keep content clean and clear */
     
     /* Text Colors */
     --text-light: #FFFFFF; /* White text for better contrast */
     --text-color: #333333; /* Dark gray text for readability */
+    --text-dark: #CCCCCC; /* Light text for dark mode */
     
     /* Link Colors */
     --link-color: var(--primary-color);
@@ -36,31 +38,51 @@
     --border-radius: 10px; /* Rounded corners for a soft, friendly feel */
 }
 
+/* Dark Mode Overrides */
+[data-theme='dark'] {
+    --background-color: #000000; /* Full black background for dark mode */
+    --background-dark-card: #1F1F1F; /* Darker card background */
+    --card-bg: #2e2e2e; /* Dark background for cards */
+    --text-light: #ffffff; /* Light gray text */
+    --text-color: #ffffff; /* Light gray text for dark mode */
+    --primary-color: #FF6600; /* A brighter orange for dark mode */
+    --secondary-color: #FF5E62; /* Keep the vibrant pink for accent */
+    --link-color: var(--primary-color); /* Maintain primary color for links */
+    --link-hover-color: var(--primary-light); /* Hover color for links */
+    --button-hover: #FF3E50; /* Hover color for buttons */
+    --accent-color: #FF5E62; /* Bright accent color */
+}
+
+
 
 
 body {
-    background-color: var(--background-dark);
+    background-color: var(--background-color);
     font-family: "Raleway", sans-serif;
     padding-top: 70px;
-    background-size: cover;
-    background-position: center center; 
-    background-repeat: no-repeat;  
-    background-attachment: fixed;
 }
 
-h2 {
+h2, h4 {
     color: var(--accent-color);
     margin-bottom: 20px;
     font-weight: 800;
 }
 
+h3 {
+    font-weight: 700;
+}
+
+label {
+    color: var(--text-color);
+    font-weight: 500;
+}
 
 /* Flash message styling */
 .flash-message {
     transition: opacity 1s ease, visibility 1s ease;
     padding: 15px;
     border-radius: 5px;
-    color: white;
+    color:  var(--accent-color);
     margin-bottom: 20px;
     font-size: 16px;
     visibility: visible; /* Ensure the message is visible initially */
@@ -74,7 +96,7 @@ h2 {
 
 /* Success Message (Green) */
 .flash-message-success {
-    background-color: #3a9f3d; /* Green for success */
+    background-color: #54ce58; /* Green for success */
 }
 
 /* Error Message (Red) */
@@ -84,7 +106,7 @@ h2 {
 
 /* Info Message (Blue) */
 .flash-message-info {
-    background-color: #2196F3; /* Blue for info */
+    background-color: #209bff; /* Blue for info */
 }
 
 /* Add hover effects for better user experience */
@@ -107,4 +129,11 @@ h2 {
 
 .flash-message p {
     margin: 0;
+}
+
+
+.alert {
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: var(--border-radius);
 }

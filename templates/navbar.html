@@ -34,9 +34,6 @@
                             <a href="{{ url_for('user.user_dashboard') }}" class="me-3 {% if request.endpoint == 'user.user_dashboard' %}active{% endif %}">Juices Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url_for('complaints.submit_complaint') }}" class="me-3 {% if request.endpoint == 'complaints.submit_complaint' %}active{% endif %}">Complaints</a>
-                        </li>
-                        <li class="nav-item">
                             <a href="{{ url_for('complaints.view_complaints') }}" class="me-3 {% if request.endpoint == 'complaints.view_complaints' %}active{% endif %}">Complaints List</a>
                         </li>
                     <!-- User role links -->
@@ -46,6 +43,9 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ url_for('user.user_dashboard') }}" class="me-3 {% if request.endpoint == 'user.user_dashboard' %}active{% endif %}">Juices Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('complaints.submit_complaint') }}" class="me-3 {% if request.endpoint == 'complaints.submit_complaint' %}active{% endif %}">Complaints</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
@@ -61,6 +61,12 @@
                             Welcome, <strong>{{ session['user_name'] }}</strong>
                         </span>
                     </li>
+                    <li class="nav-item me-2">
+                        <button onclick="toggleTheme()" class="btn btn-toggle-theme">
+                            <span class="icon-sun">☀️</span>
+                            <span class="icon-moon">🌙</span>
+                        </button>
+                    </li>
                     <li class="nav-item">
                         <a href="{{ url_for('auth.logout') }}" class="btn btn-danger btn-sm">Logout</a>
                     </li>
@@ -75,6 +81,12 @@
 
                 <!-- Right side menu for Guests -->
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item me-2">
+                        <button onclick="toggleTheme()" class="btn btn-toggle-theme">
+                            <span class="icon-sun">☀️</span>
+                            <span class="icon-moon">🌙</span>
+                        </button>
+                    </li>
                     <li class="nav-item">
                         <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-sm me-2 {% if request.endpoint == 'auth.login' %}active{% endif %}">Login</a>
                     </li>

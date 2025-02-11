@@ -23,7 +23,7 @@ def submit_complaint():
         complaint.save_complaint()
 
         flash("Thank you for your complaint or suggestion! We will review it shortly.", "info")
-        return redirect(url_for('complaints.view_complaints'))
+        return redirect(url_for('complaints.submit_complaint'))
 
     # If it's a GET request, just render the complaint form
     return render_template('complaint.html', user_name=user_name)

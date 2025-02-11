@@ -156,6 +156,12 @@ def edit_juice(juice_id):
     cursor.execute("SELECT * FROM fruits")
     all_fruits = cursor.fetchall()
 
+    # Get selected fruit ids for the current juice
+    cursor.execute("""
+        SELECT fruit_id FROM juice_fruits WHERE juice_id = %s
+    """, (juice_id,))
+    selected_fruit_ids = [fruit['fruit_id'] for fruit in cursor.fetchall()]
+
     # Fetch user info to pass to the template
     user_name = session.get('user_name', 'Guest')  # Default to 'Guest' if user_name is not set
 
@@ -192,7 +198,7 @@ def edit_juice(juice_id):
         except Exception as e:
             flash(f"Error updating juice: {str(e)}", "error")
 
-    return render_template('edit_juice.html', juice=juice, all_fruits=all_fruits,  user=session.get('user_name', 'User'))
+    return render_template('edit_juice.html', juice=juice, all_fruits=all_fruits, selected_fruit_ids=selected_fruit_ids, user_name=user_name)
 
 
 

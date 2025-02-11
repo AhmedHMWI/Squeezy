@@ -1,8 +1,4 @@
-.alert {
-    font-size: 1rem;
-    padding: 10px;
-    border-radius: var(--border-radius);
-}
+
 
 /* Styling for cards in the dashboard */
 .card {
@@ -64,7 +60,7 @@ button {
 
 .btn-danger {
     background-color: var(--accent-color);
-    color: var(--card-bg);
+    color: var(--text-light);
     border: none;
 }
 

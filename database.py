@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def get_db_connection():
-    """ ✅ Create and return a database connection """
     try:
         connection = mysql.connector.connect(
             host=os.getenv("DB_HOST", "localhost"),
@@ -17,14 +16,12 @@ def get_db_connection():
         )
         return connection
     except mysql.connector.Error as e:
-        print(f"❌ Database Connection Error: {e}")
-        return None  # ✅ Return None instead of breaking the app
+        return None
 
 def create_tables():
     """ ✅ Create necessary tables in the database """
     conn = get_db_connection()
     if not conn:
-        print("❌ Unable to connect to database. Tables were not created.")
         return
     
     cursor = conn.cursor()
@@ -78,12 +75,11 @@ def create_tables():
         for table in tables:
             cursor.execute(table)
         conn.commit()
-        print("✅ Tables created successfully!")
-    except mysql.connector.Error as e:
-        print(f"❌ Error creating tables: {e}")
     finally:
         cursor.close()
         conn.close()
+
+
 
 def seed_data():
     """ ✅ Insert initial test data into the database """
@@ -169,10 +165,10 @@ def seed_data():
         cursor.executemany("INSERT INTO juice_fruits (juice_id, fruit_id, quantity) VALUES (%s, %s, %s)", juice_fruits)
         conn.commit()
 
-        print("✅ Juice fruits inserted successfully!")
+        print("Juice fruits inserted successfully!")
 
     except mysql.connector.Error as e:
-        print(f"❌ Database Error while seeding: {e}")
+        print(f"Database Error while seeding: {e}")
     finally:
         cursor.close()
         conn.close()

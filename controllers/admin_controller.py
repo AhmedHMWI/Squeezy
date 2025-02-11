@@ -5,7 +5,7 @@ from database import get_db_connection
 
 UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-os.makedirs(UPLOAD_FOLDER, exist_ok=True) 
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin', template_folder='../templates')
 
@@ -20,7 +20,6 @@ def get_all_fruits():
         fruits = cursor.fetchall()
         return fruits
     except Exception as e:
-        print(f"Database Error: {e}")
         return []
     finally:
         conn.close()
@@ -67,7 +66,6 @@ def add_fruit():
         conn.close()
 
     return redirect(url_for('admin.admin_dashboard'))
-
 
 @admin_bp.route('/edit_fruit/<int:fruit_id>', methods=['GET', 'POST'])
 def edit_fruit(fruit_id):
@@ -117,7 +115,6 @@ def edit_fruit(fruit_id):
 
 @admin_bp.route('/fruit/delete/<int:fruit_id>', methods=['POST'])
 def delete_fruit(fruit_id):
-    """ Delete the fruit """
     if 'user_id' not in session or session['role'] != 'admin':
         flash("You must be logged in as an admin to perform this action.", "error")
         return redirect(url_for('auth.login'))
@@ -126,7 +123,6 @@ def delete_fruit(fruit_id):
     cursor = conn.cursor()
 
     try:
-        # Delete the fruit
         cursor.execute("DELETE FROM fruits WHERE id = %s", (fruit_id,))
         conn.commit()
         flash("✅ Fruit deleted successfully!", "danger")
@@ -137,4 +133,3 @@ def delete_fruit(fruit_id):
         conn.close()
 
     return redirect(url_for('admin.admin_dashboard'))
-

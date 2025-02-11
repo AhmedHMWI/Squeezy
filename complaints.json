@@ -8,5 +8,45 @@
         "name": "Hashem Rashedat",
         "email": "hashem@example.com",
         "message": "My favorite juice is banana, I love banana"
+    },
+    {
+        "name": "Banana",
+        "email": "ahmed@example.com",
+        "message": "asdfsdafasf"
+    },
+    {
+        "name": "Mango",
+        "email": "amr@example.com",
+        "message": "adsf"
+    },
+    {
+        "name": "hashoom",
+        "email": "hashem@example.com",
+        "message": "no way, everything is nice here"
+    },
+    {
+        "name": "Ammar",
+        "email": "ammar@example.com",
+        "message": "I like all your juices, thank you"
+    },
+    {
+        "name": "Mona",
+        "email": "mona@example.com",
+        "message": "my name is mona but I like to write here"
+    },
+    {
+        "name": "lkasjd",
+        "email": "lkasjdf@emal.com",
+        "message": "alskdj"
+    },
+    {
+        "name": "alskdjf;alskdfj",
+        "email": "lkjd@emai.com",
+        "message": "lakdjsflkjs\r\n\r\n"
+    },
+    {
+        "name": "l;aksdflk",
+        "email": "lksd@lsakdmf.com",
+        "message": "l;kasjdf"
     }
 ]
